@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Hash Humanity — Report or Contact</title>
+<link rel="icon" href="logo.png" />
+<meta name="description" content="Report a user, flag content, or contact Hash Humanity support. Reports go straight to our team." />
+
+<base href="./" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+
+<style>
+  :root{
+    color-scheme:dark;
+
+    --ink:#f7f7f7;
+    --muted:rgba(255,255,255,.72);
+    --muted2:rgba(255,255,255,.50);
+
+    --stroke:rgba(255,255,255,.16);
+    --stroke2:rgba(255,255,255,.30);
+
+    --accent:#38e0ff;
+    --accent-soft:rgba(56,224,255,.16);
+    --ok:#3ee68a;
+    --err:#ff6b6b;
+
+    --radius:22px;
+    --wrap:760px;
+
+    --shadow:0 28px 110px rgba(0,0,0,.72);
+    --glow:0 0 34px rgba(255,255,255,.10);
+
+    --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --serif:"Instrument Serif", Georgia, "Times New Roman", serif;
+    --sans:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ min-height:100%; }
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font:16px/1.6 var(--sans);
+    background:linear-gradient(180deg,#000 0%,#050505 48%,#000 100%);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    isolation:isolate;
+  }
+
+  #humanity-field{
+    position:fixed; inset:0; z-index:-2; width:100%; height:100%;
+    pointer-events:none; opacity:.9;
+  }
+
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background:
+      radial-gradient(circle at 50% -10%, rgba(56,224,255,.16), transparent 40%),
+      radial-gradient(circle at 50% -10%, rgba(255,255,255,.10), transparent 32%),
+      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+    background-size:auto, auto, 60px 60px, 60px 60px;
+    mask-image:radial-gradient(circle at 50% 16%, black 0%, transparent 78%);
+    pointer-events:none;
+  }
+
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background:rgba(255,255,255,.22); }
+
+  .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 22px 80px; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    background:linear-gradient(180deg, rgba(0,0,0,.88), rgba(0,0,0,.50), transparent);
+    backdrop-filter:blur(18px) saturate(150%);
+    padding:16px 0;
+  }
+
+  .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand img{
+    width:52px; height:52px; border-radius:15px; object-fit:cover; background:#fff;
+    border:1px solid rgba(255,255,255,.24);
+    box-shadow:0 0 30px rgba(255,255,255,.14),0 14px 44px rgba(0,0,0,.7);
+  }
+  .brand strong{
+    letter-spacing:.24em; font-weight:900; text-transform:uppercase;
+    font-size:clamp(17px,2.4vw,26px); line-height:1; white-space:nowrap;
+    text-shadow:0 0 22px rgba(255,255,255,.16);
+  }
+
+  .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+  .btn{
+    appearance:none; border:1px solid var(--stroke); color:var(--ink);
+    background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+    padding:11px 16px; border-radius:999px;
+    font-weight:800; letter-spacing:.11em; text-transform:uppercase; font-size:12px;
+    backdrop-filter:blur(16px) saturate(150%);
+    box-shadow:0 16px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.14);
+    text-decoration:none; display:inline-flex; align-items:center; gap:10px; cursor:pointer;
+    transition:transform .16s ease,border-color .18s ease,background .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:hover{ transform:translateY(-2px); border-color:var(--stroke2); background:linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.07)); }
+
+  .hero{ padding:52px 0 8px; }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:7px 15px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.05);
+    color:rgba(255,255,255,.74);
+    font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em;
+    margin-bottom:20px; backdrop-filter:blur(16px); box-shadow:var(--glow);
+  }
+  .eyebrow-dot{
+    width:7px; height:7px; border-radius:999px; background:var(--accent);
+    box-shadow:0 0 12px rgba(56,224,255,.9); animation:beat 1.9s ease-in-out infinite;
+  }
+  @keyframes beat{ 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(1.5); opacity:.55; } }
+
+  h1{
+    font-size:clamp(38px,6.4vw,66px); line-height:.98; margin:0 0 14px;
+    font-weight:900; letter-spacing:-.045em; text-shadow:0 0 34px rgba(255,255,255,.12);
+  }
+  h1 em{ font-family:var(--serif); font-style:italic; font-weight:400; }
+
+  .lead{ color:var(--muted); font-size:clamp(16px,2vw,19px); margin:0; max-width:56ch; }
+
+  /* Card wrapper for the form */
+  .panel{
+    position:relative; overflow:hidden; margin-top:30px;
+    background:linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:var(--radius); padding:26px 24px;
+    box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.10);
+    backdrop-filter:blur(18px) saturate(150%);
+  }
+  .panel::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 18% 0%, rgba(255,255,255,.14), transparent 42%);
+    pointer-events:none;
+  }
+  .panel > *{ position:relative; z-index:1; }
+
+  /* Segmented type toggle */
+  .seg{
+    display:grid; grid-template-columns:1fr 1fr; gap:6px;
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+    border-radius:14px; padding:5px; margin-bottom:22px;
+  }
+  .seg button{
+    appearance:none; border:0; cursor:pointer;
+    background:transparent; color:var(--muted);
+    font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:.02em;
+    padding:11px 10px; border-radius:10px;
+    transition:background .2s ease, color .2s ease;
+  }
+  .seg button[aria-selected="true"]{
+    background:linear-gradient(180deg, rgba(56,224,255,.22), rgba(56,224,255,.08));
+    color:#fff; box-shadow:inset 0 0 0 1px rgba(56,224,255,.4);
+  }
+
+  label{
+    display:block; font-family:var(--mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted2); margin:0 0 8px;
+  }
+  .field{ margin-bottom:18px; }
+  .field:last-of-type{ margin-bottom:0; }
+
+  input, select, textarea{
+    width:100%; color:var(--ink); font:15px/1.5 var(--sans);
+    background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.16);
+    border-radius:12px; padding:13px 14px;
+    transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    -webkit-appearance:none; appearance:none;
+  }
+  select{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-opacity='0.6'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat; background-position:right 14px center; padding-right:40px;
+  }
+  textarea{ min-height:130px; resize:vertical; }
+
+  input::placeholder, textarea::placeholder{ color:rgba(255,255,255,.34); }
+
+  input:focus, select:focus, textarea:focus{
+    outline:none; border-color:rgba(56,224,255,.6);
+    background:rgba(0,0,0,.5);
+    box-shadow:0 0 0 3px rgba(56,224,255,.14);
+  }
+
+  .hint{ margin:7px 2px 0; font-size:12px; color:var(--muted2); }
+  .charcount{ float:right; font-family:var(--mono); font-size:11px; color:var(--muted2); }
+
+  .submit{
+    width:100%; margin-top:22px; padding:15px; border-radius:14px;
+    border:1px solid rgba(255,255,255,.88);
+    background:linear-gradient(180deg, #fff, #cfcfcf); color:#000;
+    font-weight:900; letter-spacing:.06em; text-transform:uppercase; font-size:13px;
+    cursor:pointer; position:relative; overflow:hidden;
+    box-shadow:0 0 42px rgba(56,224,255,.28), 0 20px 70px rgba(0,0,0,.7);
+    transition:transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+  }
+  .submit:hover:not(:disabled){ transform:translateY(-2px); }
+  .submit:disabled{ cursor:not-allowed; opacity:.55; }
+  .submit .spinner{
+    display:none; width:15px; height:15px; margin-right:9px; vertical-align:-2px;
+    border:2px solid rgba(0,0,0,.3); border-top-color:#000; border-radius:50%;
+    animation:spin 0.7s linear infinite;
+  }
+  .submit.loading .spinner{ display:inline-block; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .status{
+    margin-top:16px; padding:13px 15px; border-radius:12px; font-size:14px;
+    display:none; align-items:flex-start; gap:10px;
+  }
+  .status.show{ display:flex; }
+  .status.ok{ background:rgba(62,230,138,.12); border:1px solid rgba(62,230,138,.4); color:#c9ffe4; }
+  .status.err{ background:rgba(255,107,107,.12); border:1px solid rgba(255,107,107,.4); color:#ffd6d6; }
+
+  /* Success state replaces form */
+  .done{ text-align:center; padding:20px 8px; display:none; }
+  .done.show{ display:block; }
+  .done .check{
+    width:64px; height:64px; margin:0 auto 18px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--accent-soft); border:1px solid rgba(56,224,255,.45);
+  }
+  .done h2{ margin:0 0 8px; font-size:24px; font-weight:900; letter-spacing:-.02em; }
+  .done h2 em{ font-family:var(--serif); font-style:italic; font-weight:400; }
+  .done p{ margin:0 auto 20px; color:var(--muted); max-width:44ch; }
+  .done .ref{ font-family:var(--mono); font-size:12px; color:var(--muted2); }
+
+  .user-only, .tech-only{ display:none; }
+  body[data-type="user"] .user-only{ display:block; }
+  body[data-type="tech"] .tech-only{ display:block; }
+
+  footer{
+    color:var(--muted2); font-size:13px; padding:26px 0 0; margin-top:34px;
+    border-top:1px solid rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  footer .tag{ font-family:var(--serif); font-style:italic; font-size:15px; color:var(--muted); }
+
+  @media (max-width:720px){
+    .wrap{ padding:0 16px 72px; }
+    header{ flex-direction:column; align-items:flex-start; padding:10px 0 12px; }
+    .brand img{ width:48px; height:48px; border-radius:14px; }
+    .brand strong{ font-size:clamp(19px,7vw,27px); letter-spacing:.18em; }
+    .btn{ padding:10px 14px; font-size:11px; }
+    .hero{ padding:34px 0 4px; }
+    .panel{ padding:22px 18px; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{ animation:none !important; transition:none !important; }
+    .reveal{ opacity:1; transform:none; }
+    #humanity-field{ display:none; }
+  }
+</style>
+</head>
+
+<body data-type="user">
+  <canvas id="humanity-field" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="logo.png" alt="Hash Humanity" />
+        <strong>HASH HUMANITY</strong>
+      </div>
+      <nav class="actions">
+        <button class="btn" type="button" onclick="goBack()">← Back</button>
+        <a class="btn" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow reveal">
+          <span class="eyebrow-dot"></span>
+          <span>Reports · Support · Direct to our team</span>
+        </div>
+
+        <h1 class="reveal">Report or <em>contact us</em>.</h1>
+
+        <p class="lead reveal">
+          Flag a user, report content, or tell us about a technical issue. Every report lands with our team
+          right away — no bots in between.
+        </p>
+      </section>
+
+      <section class="panel reveal">
+        <!-- The form -->
+        <div id="formWrap">
+          <div class="seg" role="tablist" aria-label="Report type">
+            <button type="button" role="tab" data-set="user" aria-selected="true">Report a user or content</button>
+            <button type="button" role="tab" data-set="tech" aria-selected="false">Technical issue</button>
+          </div>
+
+          <!-- USER report fields -->
+          <div class="field user-only">
+            <label for="reportedUsername">Username or profile to report</label>
+            <input id="reportedUsername" type="text" placeholder="@username" autocomplete="off" />
+            <p class="hint">The person or profile you're reporting.</p>
+          </div>
+
+          <div class="field user-only">
+            <label for="violationType">What's the violation?</label>
+            <select id="violationType">
+              <option value="">Select a reason…</option>
+              <option value="harassment">Harassment / Bullying</option>
+              <option value="hate_speech">Hate Speech</option>
+              <option value="spam">Spam</option>
+              <option value="scam">Scam / Fraud</option>
+              <option value="impersonation">Impersonation</option>
+              <option value="threats_violence">Threats / Violence</option>
+              <option value="self_harm">Self-harm / Suicide</option>
+              <option value="sexual_content">Sexual Content</option>
+              <option value="misinformation">Misinformation / Fake News</option>
+              <option value="illegal_content">Illegal Content</option>
+              <option value="underage_user">Underage User</option>
+              <option value="copyright">Intellectual Property / Copyright</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- TECH report fields -->
+          <div class="field tech-only">
+            <label for="issueType">What's going wrong?</label>
+            <select id="issueType">
+              <option value="">Select an issue…</option>
+              <option value="crash">App crash / not loading</option>
+              <option value="payment_pulse">Payment / Pulse issue</option>
+              <option value="login_access">Login / account access</option>
+              <option value="posts_not_showing">Posts not showing</option>
+              <option value="notifications">Notifications not working</option>
+              <option value="profile_settings">Profile / settings issue</option>
+              <option value="voice_room">Voice room issue</option>
+              <option value="performance">Performance / slow loading</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="field tech-only">
+            <label for="deviceInfo">Device &amp; app <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input id="deviceInfo" type="text" placeholder="e.g. iPhone 14, iOS 18, World App" autocomplete="off" />
+          </div>
+
+          <!-- SHARED fields -->
+          <div class="field">
+            <label for="description">Details
+              <span class="charcount"><span id="cc">0</span>/1000</span>
+            </label>
+            <textarea id="description" maxlength="1000" placeholder="Tell us what happened — the more detail, the faster we can act."></textarea>
+            <p class="hint">At least 10 characters.</p>
+          </div>
+
+          <div class="field">
+            <label for="contactEmail">Your email</label>
+            <input id="contactEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+            <p class="hint">So our team can reply to you directly.</p>
+          </div>
+
+          <button id="submitBtn" class="submit" type="button">
+            <span class="spinner"></span><span class="submit-label">Send report</span>
+          </button>
+
+          <div id="status" class="status"></div>
+        </div>
+
+        <!-- Success state -->
+        <div id="doneWrap" class="done">
+          <div class="check">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h2>Report <em>received</em>.</h2>
+          <p>Thanks — our team has it and will follow up at the email you gave us. You can close this page.</p>
+          <p class="ref" id="refLine"></p>
+          <button class="btn" type="button" onclick="resetForm()" style="margin-top:6px">Send another</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="y"></span> Hash Humanity</span>
+      <span class="tag">You are the proof, not the product.</span>
+    </footer>
+  </div>
+
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  /* ---------- Firebase functions ---------- */
+  let functions = null;
+  (function initFn(tries){
+    tries = tries || 0;
+    if (typeof firebase !== "undefined" && firebase.initializeApp) {
+      try {
+        if (!firebase.apps || !firebase.apps.length) {
+          firebase.initializeApp({
+            apiKey: "AIzaSyBT7P7DAfV-I9ESe6f9Jdp5ioCyGIK0d9A",
+            authDomain: "hashhumanity-58b9a.firebaseapp.com",
+            databaseURL: "https://hashhumanity-58b9a-default-rtdb.firebaseio.com",
+            projectId: "hashhumanity-58b9a"
+          });
+        }
+        functions = firebase.app().functions("us-central1");
+        return;
+      } catch (e) { console.warn("Firebase init failed", e); return; }
+    }
+    if (tries < 40) setTimeout(function(){ initFn(tries + 1); }, 100);
+  })();
+
+  /* ---------- Type toggle ---------- */
+  const segButtons = document.querySelectorAll(".seg button");
+  segButtons.forEach((b) => {
+    b.addEventListener("click", () => {
+      segButtons.forEach((x) => x.setAttribute("aria-selected", "false"));
+      b.setAttribute("aria-selected", "true");
+      document.body.dataset.type = b.dataset.set;
+      hideStatus();
+    });
+  });
+
+  /* ---------- Char counter ---------- */
+  const desc = document.getElementById("description");
+  const cc = document.getElementById("cc");
+  desc.addEventListener("input", () => { cc.textContent = desc.value.length; });
+
+  /* ---------- Status helpers ---------- */
+  const statusEl = document.getElementById("status");
+  function showStatus(kind, msg){
+    statusEl.className = "status show " + kind;
+    statusEl.textContent = msg;
+  }
+  function hideStatus(){ statusEl.className = "status"; }
+
+  const emailValid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || "").trim());
+
+  /* ---------- Submit ---------- */
+  const submitBtn = document.getElementById("submitBtn");
+  const submitLabel = submitBtn.querySelector(".submit-label");
+
+  submitBtn.addEventListener("click", async () => {
+    hideStatus();
+    const type = document.body.dataset.type; // "user" | "tech"
+    const description = desc.value.trim();
+    const contactEmail = document.getElementById("contactEmail").value.trim();
+
+    // Client-side validation mirrors the backend so users get instant feedback
+    if (type === "user") {
+      const reportedUsername = document.getElementById("reportedUsername").value.trim();
+      const violationType = document.getElementById("violationType").value;
+      if (!reportedUsername) return showStatus("err", "Please enter the username or profile you're reporting.");
+      if (!violationType) return showStatus("err", "Please select a violation type.");
+    } else {
+      const issueType = document.getElementById("issueType").value;
+      if (!issueType) return showStatus("err", "Please select the type of issue.");
+    }
+    if (description.length < 10) return showStatus("err", "Please add a bit more detail (at least 10 characters).");
+    if (!emailValid(contactEmail)) return showStatus("err", "Please enter a valid email so we can reply.");
+
+    if (!functions) return showStatus("err", "Couldn't reach our servers. Check your connection and try again.");
+
+    // Build payload matching the submitReport callable
+    const payload = {
+      reportType: type,
+      description,
+      contactEmail,
+      sourceLocation: "reports_page",
+    };
+    if (type === "user") {
+      payload.reportedUsername = document.getElementById("reportedUsername").value.trim();
+      payload.violationType = document.getElementById("violationType").value;
+    } else {
+      payload.issueType = document.getElementById("issueType").value;
+      payload.deviceInfo = document.getElementById("deviceInfo").value.trim();
+    }
+
+    // Lock UI
+    submitBtn.disabled = true;
+    submitBtn.classList.add("loading");
+    submitLabel.textContent = "Sending…";
+
+    try {
+      const submitReport = functions.httpsCallable("submitReport");
+      const res = await submitReport(payload);
+      const reportId = (res && res.data && res.data.reportId) ? res.data.reportId : null;
+
+      document.getElementById("formWrap").style.display = "none";
+      const done = document.getElementById("doneWrap");
+      done.classList.add("show");
+      if (reportId) {
+        document.getElementById("refLine").textContent = "Reference: " + reportId;
+      }
+    } catch (err) {
+      console.error("submitReport failed:", err);
+      const msg = (err && err.message) ? err.message : "Something went wrong. Please try again.";
+      showStatus("err", msg);
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("loading");
+      submitLabel.textContent = "Send report";
+    }
+  });
+
+  function resetForm(){
+    document.getElementById("doneWrap").classList.remove("show");
+    document.getElementById("formWrap").style.display = "block";
+    document.getElementById("reportedUsername").value = "";
+    document.getElementById("violationType").value = "";
+    document.getElementById("issueType").value = "";
+    document.getElementById("deviceInfo").value = "";
+    desc.value = ""; cc.textContent = "0";
+    document.getElementById("contactEmail").value = "";
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("loading");
+    submitLabel.textContent = "Send report";
+    hideStatus();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* ---------- Signature particle field ---------- */
+  (function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const canvas = document.getElementById("humanity-field");
+    const ctx = canvas.getContext("2d");
+    let w, h, dpr, nodes = [], mouse = { x: -9999, y: -9999 };
+
+    function size() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth = window.innerWidth;
+      h = canvas.clientHeight = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const target = Math.min(90, Math.floor((w * h) / 20000));
+      nodes = Array.from({ length: target }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28,
+        r: Math.random() * 1.4 + 0.6, verified: Math.random() < 0.14
+      }));
+    }
+    function step() {
+      ctx.clearRect(0, 0, w, h);
+      for (const n of nodes) {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+        const dxm = mouse.x - n.x, dym = mouse.y - n.y, dm = Math.hypot(dxm, dym);
+        if (dm < 160) { n.x += (dxm / dm) * 0.35; n.y += (dym / dm) * 0.35; }
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
+          if (d < 128) {
+            const o = (1 - d / 128) * 0.16;
+            ctx.strokeStyle = (a.verified || b.verified) ? "rgba(56,224,255," + (o*1.6) + ")" : "rgba(255,255,255," + o + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+      for (const n of nodes) {
+        if (n.verified) {
+          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 2.4, 0, Math.PI*2); ctx.fillStyle = "rgba(56,224,255,0.16)"; ctx.fill();
+          ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fillStyle = "rgba(150,238,255,0.95)"; ctx.fill();
+        } else {
+          ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fillStyle = "rgba(255,255,255,0.55)"; ctx.fill();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    window.addEventListener("resize", size, { passive: true });
+    window.addEventListener("pointermove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+    window.addEventListener("pointerleave", () => { mouse.x = -9999; mouse.y = -9999; });
+    size(); requestAnimationFrame(step);
+  })();
+
+  /* ---------- Scroll reveals ---------- */
+  (function () {
+    const items = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("in")); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    items.forEach((el) => io.observe(el));
+  })();
+
+  /* ---------- Back button ---------- */
+  async function probe(url){
+    try { const r = await fetch(url, { method: "HEAD", cache: "no-store" }); return r.ok; }
+    catch { return false; }
+  }
+  async function goBack(){
+    const candidates = ["index.html", "./index.html", "../index.html", "/index.html", "promo.html"];
+    for (const url of candidates){ if (await probe(url)) { location.href = url; return; } }
+    history.back();
+  }
+</script>
+</body>
+</html>
