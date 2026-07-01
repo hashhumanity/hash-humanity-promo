@@ -53,7 +53,6 @@
     isolation:isolate;
   }
 
-  /* Signature: shared proof-of-humanity particle field */
   #humanity-field{
     position:fixed;
     inset:0;
@@ -83,58 +82,55 @@
   img{ max-width:100%; display:block; }
   ::selection{ background:rgba(255,255,255,.22); }
 
-  .wrap{
-    max-width:var(--wrap);
-    margin:0 auto;
-    padding:0 22px 80px;
-  }
+  .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 22px 80px; }
 
-  /* Scroll reveals */
   .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
   .reveal.in{ opacity:1; transform:none; }
 
   header{
-    position:sticky;
-    top:0;
-    z-index:50;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
     border-bottom:1px solid rgba(255,255,255,.08);
     background:linear-gradient(180deg, rgba(0,0,0,.88), rgba(0,0,0,.50), transparent);
     backdrop-filter:blur(18px) saturate(150%);
     padding:16px 0;
   }
 
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    min-width:0;
-  }
+  .brand{ display:flex; align-items:center; gap:16px; min-width:0; }
 
   .brand img{
-    width:52px;
-    height:52px;
-    border-radius:15px;
-    object-fit:cover;
-    background:#fff;
-    border:1px solid rgba(255,255,255,.24);
+    width:60px; height:60px; border-radius:16px; object-fit:cover;
+    background:#fff; border:1px solid rgba(255,255,255,.24);
     box-shadow:0 0 30px rgba(255,255,255,.14),0 14px 44px rgba(0,0,0,.7);
   }
 
   .brand strong{
-    letter-spacing:.24em;
-    font-weight:900;
-    text-transform:uppercase;
-    font-size:clamp(17px,2.4vw,26px);
-    line-height:1;
-    white-space:nowrap;
+    letter-spacing:.22em; font-weight:900; text-transform:uppercase;
+    font-size:clamp(24px,3vw,36px); line-height:1; white-space:nowrap;
     text-shadow:0 0 22px rgba(255,255,255,.16);
   }
 
-  .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+  .lang-switch{ position:relative; }
+  .lang-btn{ min-width:58px; font-weight:800; letter-spacing:.1em; }
+  .lang-menu{
+    list-style:none; margin:0; padding:6px; position:absolute; top:calc(100% + 8px); right:0;
+    min-width:190px; max-height:320px; overflow-y:auto;
+    background:#0d0d0d; border:1px solid var(--stroke); border-radius:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.6);
+    display:none; z-index:60;
+  }
+  .lang-menu.open{ display:block; }
+  .lang-menu li{ display:block; }
+  .lang-menu button{
+    width:100%; text-align:left; background:transparent; border:0; color:var(--muted);
+    padding:10px 12px; border-radius:9px; cursor:pointer; font-size:13px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .lang-menu button:hover{ background:var(--accent-soft); color:var(--ink); }
+  .lang-menu button[aria-selected="true"]{ color:var(--accent); }
+  .lang-menu .code{ font-size:10px; letter-spacing:.1em; color:var(--muted2); }
 
   .btn{
     appearance:none;
@@ -202,10 +198,7 @@
   }
 
   .eyebrow-dot{
-    width:7px;
-    height:7px;
-    border-radius:999px;
-    background:var(--accent);
+    width:7px; height:7px; border-radius:999px; background:var(--accent);
     box-shadow:0 0 12px rgba(56,224,255,.9);
     animation:beat 1.9s ease-in-out infinite;
   }
@@ -219,12 +212,7 @@
     letter-spacing:-.045em;
     text-shadow:0 0 34px rgba(255,255,255,.12);
   }
-  h1 em{
-    font-family:var(--serif);
-    font-style:italic;
-    font-weight:400;
-    letter-spacing:-.01em;
-  }
+  h1 em{ font-family:var(--serif); font-style:italic; font-weight:400; }
 
   .lead{
     color:var(--muted);
@@ -296,10 +284,8 @@
   .card strong{ color:#fff; }
   .card .muted{ color:var(--muted2) !important; }
 
-  /* Full-width feature cards for How It Works / What's Next */
   .card.wide{ grid-column:1 / -1; }
 
-  /* Numbered steps inside How It Works */
   .steps{ position:relative; z-index:1; display:grid; gap:14px; margin-top:4px; }
   .step{ display:flex; gap:14px; align-items:flex-start; }
   .step .n{
@@ -386,8 +372,14 @@
       </div>
 
       <nav class="actions">
-        <button class="btn" type="button" onclick="goBack()">← Back</button>
-        <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch</a>
+        <div class="lang-switch" id="langSwitch">
+          <button class="btn lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="langBtnLabel">EN</span>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox"></ul>
+        </div>
+        <button class="btn" type="button" onclick="goBack()" data-i18n="back">← Back</button>
+        <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener" data-i18n="launch">Launch</a>
       </nav>
     </header>
 
@@ -395,103 +387,102 @@
       <section class="hero">
         <div class="eyebrow reveal">
           <span class="eyebrow-dot"></span>
-          <span>Mission · Vision · Human-first network</span>
+          <span data-i18n="eyebrow">Mission · Vision · Human-first network</span>
         </div>
 
-        <h1 class="reveal">Mission &amp; <em>vision</em>.</h1>
+        <h1 class="reveal" data-i18n-html="h1">Mission &amp; <em>vision</em>.</h1>
 
-        <p class="lead reveal">
+        <p class="lead reveal" data-i18n-html="lead">
           We're building a human-verified social network where <strong>people</strong> — not bots, click-farms, spam engines, or rage-bait machines — set the tone.
         </p>
       </section>
 
       <section class="grid">
         <article class="card reveal">
-          <span class="idx">01 — Mission</span>
-          <h2>Make social trustworthy again</h2>
-          <p>
+          <span class="idx" data-i18n="c1_idx">01 — Mission</span>
+          <h2 data-i18n="c1_h2">Make social trustworthy again</h2>
+          <p data-i18n="c1_p">
             Every account is a real human, verified through World ID. With identity handled privately,
             Hash Humanity can focus on what matters: conversation, creation, and community.
           </p>
         </article>
 
         <article class="card reveal">
-          <span class="idx">02 — Who we are</span>
-          <h2>Builders and pragmatists</h2>
-          <p>
+          <span class="idx" data-i18n="c2_idx">02 — Who we are</span>
+          <h2 data-i18n="c2_h2">Builders and pragmatists</h2>
+          <p data-i18n="c2_p">
             We ship quickly, keep the product focused, and prioritize clarity, reliability, and user trust.
             Hash Humanity is intentionally minimal — a clean, stable space for verified people.
           </p>
         </article>
 
         <article class="card reveal">
-          <span class="idx">03 — Why we're doing this</span>
-          <h2>Open social got wrecked</h2>
-          <p>
+          <span class="idx" data-i18n="c3_idx">03 — Why we're doing this</span>
+          <h2 data-i18n="c3_h2">Open social got wrecked</h2>
+          <p data-i18n="c3_p">
             Bots, spam, and incentives that reward outrage broke the open internet. Verification at the door
             removes the bot problem without turning the product into another ad-soaked machine.
           </p>
         </article>
 
         <article class="card reveal">
-          <span class="idx">04 — The bigger picture</span>
-          <h2>A network that pays people, not itself</h2>
-          <p>
+          <span class="idx" data-i18n="c4_idx">04 — The bigger picture</span>
+          <h2 data-i18n="c4_h2">A network that pays people, not itself</h2>
+          <p data-i18n="c4_p">
             Creators get paid directly through Pulse tipping, language barriers drop with built-in translation,
             and data extraction is not the business model.
           </p>
-          <p class="muted">No dark patterns. No fake metrics. Just people talking — and tipping — in the open.</p>
+          <p class="muted" data-i18n="c4_p2">No dark patterns. No fake metrics. Just people talking — and tipping — in the open.</p>
         </article>
 
         <div class="pullquote reveal">
-          <p>You are the <span>proof</span>, not the product.</p>
+          <p data-i18n-html="pull"><span>You are the proof</span>, not the product.</p>
         </div>
 
         <article class="card wide reveal">
-          <span class="idx">05 — How it works</span>
-          <h2>Three steps to get in</h2>
+          <span class="idx" data-i18n="c5_idx">05 — How it works</span>
+          <h2 data-i18n="c5_h2">Three steps to get in</h2>
           <div class="steps">
             <div class="step">
               <span class="n">1</span>
-              <span class="t"><b>Verify with World ID.</b> Prove you're human without sharing biometric data with Hash Humanity.</span>
+              <span class="t" data-i18n-html="step1"><b>Verify with World ID.</b> Prove you're human without sharing biometric data with Hash Humanity.</span>
             </div>
             <div class="step">
               <span class="n">2</span>
-              <span class="t"><b>Join the feed.</b> Post, translate, react, and connect with verified people.</span>
+              <span class="t" data-i18n-html="step2"><b>Join the feed.</b> Post, translate, react, and connect with verified people.</span>
             </div>
             <div class="step">
               <span class="n">3</span>
-              <span class="t"><b>Tip with Pulse.</b> Send WLD micro-tips through World App or WalletConnect.</span>
+              <span class="t" data-i18n-html="step3"><b>Tip with Pulse.</b> Send WLD micro-tips through World App or WalletConnect.</span>
             </div>
           </div>
         </article>
 
         <article class="card wide reveal">
-          <span class="idx">06 — What's next</span>
-          <h2>Where we're headed</h2>
-          <p>
+          <span class="idx" data-i18n="c6_idx">06 — What's next</span>
+          <h2 data-i18n="c6_h2">Where we're headed</h2>
+          <p data-i18n="c6_p">
             Device-first onboarding, deeper internationalization, creator tools, stronger voice-room experiences,
             and export paths so people are never trapped inside the platform.
           </p>
         </article>
 
         <div class="cta-row reveal">
-          <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch now</a>
-          <a class="btn" href="mailto:support@hashhumanity.world">Contact us</a>
+          <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener" data-i18n="launch_now">Launch now</a>
+          <a class="btn" href="mailto:support@hashhumanity.world" data-i18n="contact_us">Contact us</a>
         </div>
       </section>
     </main>
 
     <footer>
       <span>© <span id="y"></span> Hash Humanity</span>
-      <span class="tag">You are the proof, not the product.</span>
+      <span class="tag" data-i18n="footer_tag">You are the proof, not the product.</span>
     </footer>
   </div>
 
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
-  /* ---------- Signature: proof-of-humanity particle field ---------- */
   (function () {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -581,7 +572,6 @@
     requestAnimationFrame(step);
   })();
 
-  /* ---------- Scroll reveals ---------- */
   (function () {
     const items = document.querySelectorAll(".reveal");
     if (!("IntersectionObserver" in window)) {
@@ -603,7 +593,6 @@
     items.forEach((el) => io.observe(el));
   })();
 
-  /* ---------- Back button ---------- */
   async function probe(url){
     try {
       const r = await fetch(url, { method: "HEAD", cache: "no-store" });
@@ -620,6 +609,11 @@
     }
     history.back();
   }
+</script>
+
+<script src="i18n.js"></script>
+<script>
+  if (window.HH_I18N) { window.HH_I18N.init("mission"); }
 </script>
 </body>
 </html>
