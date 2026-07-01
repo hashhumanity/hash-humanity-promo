@@ -617,7 +617,7 @@
     /* ---------- Live verified-human counter (Firebase RTDB) ---------- */
     (function () {
       const el = document.getElementById("proofNum");
-      const FALLBACK = 2135; // shown if Firebase is unreachable
+      const FALLBACK = 1222; // real verified-human total (offline fallback only)
       const fmt = (n) => n.toLocaleString("en-US");
 
       let current = 0;      // what's on screen now
@@ -641,21 +641,29 @@
       }
 
       let db = null;
-      try {
-        firebase.initializeApp({
-          apiKey: "AIzaSyBT7P7DAfV-I9ESe6f9Jdp5ioCyGIK0d9A",
-          authDomain: "hashhumanity-58b9a.firebaseapp.com",
-          databaseURL: "https://hashhumanity-58b9a-default-rtdb.firebaseio.com",
-          projectId: "hashhumanity-58b9a"
-        });
-        db = firebase.database();
-      } catch (e) {
-        console.warn("Firebase init failed, using fallback count.", e);
+
+      function initFirebase() {
+        if (typeof firebase === "undefined" || !firebase.initializeApp) return false;
+        try {
+          if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp({
+              apiKey: "AIzaSyBT7P7DAfV-I9ESe6f9Jdp5ioCyGIK0d9A",
+              authDomain: "hashhumanity-58b9a.firebaseapp.com",
+              databaseURL: "https://hashhumanity-58b9a-default-rtdb.firebaseio.com",
+              projectId: "hashhumanity-58b9a"
+            });
+          }
+          db = firebase.database();
+          return true;
+        } catch (e) {
+          console.warn("Firebase init failed, using fallback count.", e);
+          return false;
+        }
       }
 
       let firstValue = true;
       function subscribe() {
-        db.ref("stats/verifiedCount").on(
+        db.ref("stats/verifiedHumansCount").on(
           "value",
           (snap) => {
             const v = Number(snap.val());
@@ -671,9 +679,18 @@
         );
       }
 
+      // The SDK loads from a CDN and may not be ready when this runs.
+      // Poll briefly for it; if it never arrives (blocked/offline), fall back.
       function start() {
-        if (db) subscribe();
-        else animateTo(FALLBACK, 2200);
+        let tries = 0;
+        (function waitForSdk() {
+          if (initFirebase()) { subscribe(); return; }
+          if (++tries > 40) {                // ~4s of retries, then give up
+            animateTo(FALLBACK, 2200);
+            return;
+          }
+          setTimeout(waitForSdk, 100);
+        })();
       }
 
       // Kick off when the number scrolls into view
