@@ -13,10 +13,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
+  <base href="./" />
+
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-  <base href="./" />
 
   <style>
     :root{
@@ -59,7 +59,6 @@
       isolation:isolate;
     }
 
-    /* Signature: live "proof-of-humanity" particle field on canvas */
     #humanity-field{
       position:fixed;
       inset:0;
@@ -80,7 +79,7 @@
         radial-gradient(circle at 50% -10%, rgba(255,255,255,.10), transparent 32%),
         linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
-      background-size:auto, 60px 60px, 60px 60px;
+      background-size:auto, auto, 60px 60px, 60px 60px;
       mask-image:radial-gradient(circle at 50% 20%, black 0%, transparent 78%);
       pointer-events:none;
     }
@@ -91,7 +90,6 @@
 
     .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 26px; }
 
-    /* Reveal on scroll */
     .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
     .reveal.in{ opacity:1; transform:none; }
 
@@ -109,21 +107,41 @@
 
     .header-inner{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:18px; }
 
-    .brand{ display:flex; align-items:center; gap:14px; }
+    .brand{ display:flex; align-items:center; gap:16px; }
 
     .brand img{
-      width:52px; height:52px; border-radius:15px; object-fit:cover;
+      width:66px; height:66px; border-radius:18px; object-fit:cover;
       background:#fff; border:1px solid rgba(255,255,255,.24);
       box-shadow:0 0 30px rgba(255,255,255,.14), 0 14px 44px rgba(0,0,0,.7);
     }
 
     .brand span{
-      font-weight:900; letter-spacing:.24em; text-transform:uppercase;
-      font-size:clamp(18px,2vw,26px); line-height:1; white-space:nowrap;
+      font-weight:900; letter-spacing:.22em; text-transform:uppercase;
+      font-size:clamp(24px,3vw,38px); line-height:1; white-space:nowrap;
       text-shadow:0 0 22px rgba(255,255,255,.16);
     }
 
     .actions{ display:flex; align-items:center; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
+
+    .lang-switch{ position:relative; }
+    .lang-btn{ min-width:58px; font-weight:800; letter-spacing:.1em; }
+    .lang-menu{
+      list-style:none; margin:0; padding:6px; position:absolute; top:calc(100% + 8px); right:0;
+      min-width:190px; max-height:320px; overflow-y:auto;
+      background:#0d0d0d; border:1px solid var(--stroke); border-radius:14px;
+      box-shadow:0 24px 60px rgba(0,0,0,.6);
+      display:none; z-index:60;
+    }
+    .lang-menu.open{ display:block; }
+    .lang-menu li{ display:block; }
+    .lang-menu button{
+      width:100%; text-align:left; background:transparent; border:0; color:var(--muted);
+      padding:10px 12px; border-radius:9px; cursor:pointer; font-size:13px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .lang-menu button:hover{ background:var(--accent-soft); color:var(--ink); }
+    .lang-menu button[aria-selected="true"]{ color:var(--accent); }
+    .lang-menu .code{ font-size:10px; letter-spacing:.1em; color:var(--muted2); }
 
     .btn{
       appearance:none;
@@ -153,7 +171,6 @@
       box-shadow:0 0 42px rgba(56,224,255,.28), 0 20px 70px rgba(0,0,0,.7);
     }
 
-    /* Sheen sweep on the primary CTA */
     .btn.primary::after{
       content:""; position:absolute; top:0; left:-120%; width:60%; height:100%;
       background:linear-gradient(100deg, transparent, rgba(255,255,255,.85), transparent);
@@ -203,11 +220,7 @@
       text-transform:uppercase; letter-spacing:.16em; margin:16px 0 18px;
     }
 
-    /* Live counter under the headline */
-    .proofline{
-      display:flex; align-items:baseline; gap:12px; margin:22px 0 4px;
-      font-family:var(--mono);
-    }
+    .proofline{ display:flex; align-items:baseline; gap:12px; margin:22px 0 4px; font-family:var(--mono); }
     .proofline .num{
       font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:-.02em;
       font-variant-numeric:tabular-nums; color:var(--accent);
@@ -215,7 +228,6 @@
     }
     .proofline .lbl{ color:var(--muted2); font-size:11px; text-transform:uppercase; letter-spacing:.16em; }
 
-    /* Device */
     .device-orbit{ position:relative; display:flex; align-items:center; justify-content:center; padding:18px 0; isolation:isolate; }
 
     .device-orbit::before{
@@ -265,7 +277,6 @@
     }
     @keyframes scan{ 0%,100%{ transform:translateX(-8%); } 50%{ transform:translateX(8%); } }
 
-    /* Section heading */
     .sec-head{ margin:70px 0 26px; }
     .sec-head .kicker{
       font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
@@ -335,7 +346,6 @@
     }
     footer .tag{ font-family:var(--serif); font-style:italic; font-size:15px; color:var(--muted); }
 
-    /* Audio controls */
     .audio-gate{ position:fixed; left:12px; right:12px; bottom:12px; z-index:9999; display:none; align-items:center; justify-content:center; }
     .audio-btn{
       width:min(580px,96vw); height:56px; border-radius:999px; font-weight:900;
@@ -361,8 +371,8 @@
       header{ padding:10px 0 8px; }
       .wrap{ padding:0 18px; }
       .header-inner{ flex-direction:column; align-items:stretch; gap:11px; }
-      .brand img{ width:48px; height:48px; border-radius:14px; }
-      .brand span{ font-size:clamp(20px,7vw,28px); letter-spacing:.18em; }
+      .brand img{ width:56px; height:56px; border-radius:16px; }
+      .brand span{ font-size:clamp(24px,8vw,34px); letter-spacing:.16em; }
       .actions{ width:100%; justify-content:flex-end; }
       .btn{ padding:10px 14px; font-size:11px; }
       h1{ font-size:clamp(42px,12vw,62px); }
@@ -400,8 +410,14 @@
       </div>
 
       <nav class="actions" aria-label="Primary">
-        <a class="btn" href="mission.html">Learn more</a>
-        <a class="btn" href="join.html">Join</a>
+        <div class="lang-switch" id="langSwitch">
+          <button class="btn lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="langBtnLabel">EN</span>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox"></ul>
+        </div>
+        <a class="btn" href="mission.html" data-i18n="nav_learn">Learn more</a>
+        <a class="btn" href="join.html" data-i18n="nav_join">Join</a>
       </nav>
     </div>
   </header>
@@ -411,25 +427,25 @@
       <div>
         <div class="eyebrow reveal">
           <span class="eyebrow-dot"></span>
-          <span>Human-verified · World ID only</span>
+          <span data-i18n="eyebrow">Human-verified · World ID only</span>
         </div>
 
-        <h1 class="reveal">You are the proof,<br /><em>not the product.</em></h1>
+        <h1 class="reveal" data-i18n-html="h1">You are the proof,<br /><em>not the product.</em></h1>
 
-        <p class="lead reveal">
+        <p class="lead reveal" data-i18n-html="lead">
           Hash Humanity is a human-only network with World ID at the gate. Bots out, real people in.
           Pulse tipping is built in, and <strong>Humanity Chat</strong> lets verified humans meet in live voice rooms.
         </p>
 
         <div class="proofline reveal">
-          <span class="num" id="proofNum">0</span>
-          <span class="lbl">members &amp; counting</span>
+          <span class="num" id="memberNum">0</span>
+          <span class="lbl" data-i18n="member_lbl">members &amp; counting</span>
         </div>
 
-        <div class="subline reveal">No ads · No trackers · No bot swarms</div>
+        <div class="subline reveal" data-i18n="subline">No ads · No trackers · No bot swarms</div>
 
         <div class="actions reveal" style="justify-content:flex-start;">
-          <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch now</a>
+          <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener" data-i18n="launch">Launch now</a>
         </div>
       </div>
 
@@ -441,45 +457,45 @@
     </section>
 
     <div class="sec-head reveal">
-      <span class="kicker">What you get</span>
-      <h2>Built for humans, <em>only humans</em>.</h2>
+      <span class="kicker" data-i18n="sec_kicker">What you get</span>
+      <h2 data-i18n-html="sec_h2">Built for humans, <em>only humans</em>.</h2>
     </div>
 
     <section class="grid" aria-label="Highlights">
       <article class="card reveal">
         <span class="idx">01</span>
-        <h3>World ID-gated network</h3>
-        <p>Every account is human-verified. No bot farms, no burner spam. Your feed is humans — full stop.</p>
+        <h3 data-i18n="card1_h3">World ID-gated network</h3>
+        <p data-i18n="card1_p">Every account is human-verified. No bot farms, no burner spam. Your feed is humans — full stop.</p>
       </article>
 
       <article class="card reveal">
         <span class="idx">02</span>
-        <h3>Humanity Chat voice rooms</h3>
-        <p>Jump into live voice rooms with verified humans. Create rooms, join conversations, and keep it real.</p>
+        <h3 data-i18n="card2_h3">Humanity Chat voice rooms</h3>
+        <p data-i18n="card2_p">Jump into live voice rooms with verified humans. Create rooms, join conversations, and keep it real.</p>
       </article>
 
       <article class="card reveal">
         <span class="idx">03</span>
-        <h3>Pulse tipping in WLD</h3>
-        <p>Tip creators via World App. Deep-links on mobile, WalletConnect on desktop. Support what moves you.</p>
+        <h3 data-i18n="card3_h3">Pulse tipping in WLD</h3>
+        <p data-i18n="card3_p">Tip creators via World App. Deep-links on mobile, WalletConnect on desktop. Support what moves you.</p>
       </article>
 
       <article class="card reveal">
         <span class="idx">04</span>
-        <h3>Privacy-first by design</h3>
-        <p>Hash Humanity does not collect your biometric data. World ID verification happens through World App.</p>
+        <h3 data-i18n="card4_h3">Privacy-first by design</h3>
+        <p data-i18n="card4_p">Hash Humanity does not collect your biometric data. World ID verification happens through World App.</p>
       </article>
     </section>
 
     <section class="cta reveal" aria-label="Join">
       <img src="hashhumanity-qr.png" alt="QR code to hashhumanity.world" />
       <div class="txt">
-        <h2>Join in <em>10 seconds</em>.</h2>
-        <p>
+        <h2 data-i18n-html="cta_h2">Join in <em>10 seconds</em>.</h2>
+        <p data-i18n-html="cta_p">
           Point your camera, open <strong>hashhumanity.world</strong>, and verify with World ID.
           Then jump into the feed or enter <strong>Humanity Chat</strong> voice rooms.
         </p>
-        <div class="fineprint">
+        <div class="fineprint" data-i18n="fineprint">
           Hash Humanity does not store biometric data. Verification is handled by World ID via World App.
         </div>
       </div>
@@ -487,7 +503,7 @@
 
     <footer>
       <span>© <span id="y"></span> Hash Humanity</span>
-      <span class="tag">You are the proof, not the product.</span>
+      <span class="tag" data-i18n="footer_tag">You are the proof, not the product.</span>
     </footer>
   </main>
 
@@ -518,7 +534,7 @@
           vx: (Math.random() - 0.5) * 0.28,
           vy: (Math.random() - 0.5) * 0.28,
           r: Math.random() * 1.4 + 0.6,
-          verified: Math.random() < 0.14 // a few glow as "verified"
+          verified: Math.random() < 0.14
         }));
       }
 
@@ -531,16 +547,11 @@
           if (n.x < 0 || n.x > w) n.vx *= -1;
           if (n.y < 0 || n.y > h) n.vy *= -1;
 
-          // gentle attraction toward cursor
           const dxm = mouse.x - n.x, dym = mouse.y - n.y;
           const dm = Math.hypot(dxm, dym);
-          if (dm < 160) {
-            n.x += (dxm / dm) * 0.35;
-            n.y += (dym / dm) * 0.35;
-          }
+          if (dm < 160) { n.x += (dxm / dm) * 0.35; n.y += (dym / dm) * 0.35; }
         }
 
-        // connections
         for (let i = 0; i < nodes.length; i++) {
           for (let j = i + 1; j < nodes.length; j++) {
             const a = nodes[i], b = nodes[j];
@@ -548,7 +559,6 @@
             const d = Math.hypot(dx, dy);
             if (d < 128) {
               const o = (1 - d / 128) * 0.16;
-              // links touching a verified node glow cyan
               if (a.verified || b.verified) {
                 ctx.strokeStyle = "rgba(56,224,255," + (o * 1.6) + ")";
               } else {
@@ -563,7 +573,6 @@
           }
         }
 
-        // nodes
         for (const n of nodes) {
           if (n.verified) {
             ctx.beginPath();
@@ -600,7 +609,7 @@
         return;
       }
       const io = new IntersectionObserver((entries) => {
-        entries.forEach((e, k) => {
+        entries.forEach((e) => {
           if (e.isIntersecting) {
             const el = e.target;
             const delay = el.parentElement && el.parentElement.classList.contains("grid")
@@ -614,20 +623,16 @@
       items.forEach((el) => io.observe(el));
     })();
 
-    /* ---------- Live verified-human counter (Firebase RTDB) ---------- */
+    /* ---------- Live member counter (Firebase RTDB) ---------- */
     (function () {
-      const el = document.getElementById("proofNum");
+      const el = document.getElementById("memberNum");
       const FALLBACK = 1222; // total members (offline fallback only)
       const fmt = (n) => n.toLocaleString("en-US");
 
-      let current = 0;      // what's on screen now
-      let raf = null;
-
-      // Animate from the current displayed value to a new target
+      let current = 0, raf = null;
       function animateTo(target, dur) {
         if (raf) cancelAnimationFrame(raf);
-        const from = current;
-        const delta = target - from;
+        const from = current, delta = target - from;
         if (delta === 0) { el.textContent = fmt(target); return; }
         const t0 = performance.now();
         (function frame(t) {
@@ -641,7 +646,6 @@
       }
 
       let db = null;
-
       function initFirebase() {
         if (typeof firebase === "undefined" || !firebase.initializeApp) return false;
         try {
@@ -655,56 +659,40 @@
           }
           db = firebase.database();
           return true;
-        } catch (e) {
-          console.warn("Firebase init failed, using fallback count.", e);
-          return false;
-        }
+        } catch (e) { console.warn("Firebase init failed, using fallback count.", e); return false; }
       }
 
       let firstValue = true;
       function subscribe() {
-        db.ref("stats/usersCount").on(
-          "value",
+        db.ref("stats/usersCount").on("value",
           (snap) => {
             const v = Number(snap.val());
             const target = Number.isFinite(v) && v > 0 ? v : FALLBACK;
-            // First read gets the long count-up; live updates get a quick tick
             animateTo(target, firstValue ? 2200 : 700);
             firstValue = false;
           },
-          (err) => {
-            console.warn("Counter read failed, using fallback.", err);
-            animateTo(FALLBACK, 2200);
-          }
+          (err) => { console.warn("Counter read failed, using fallback.", err); animateTo(FALLBACK, 2200); }
         );
       }
 
-      // The SDK loads from a CDN and may not be ready when this runs.
-      // Poll briefly for it; if it never arrives (blocked/offline), fall back.
       function start() {
         let tries = 0;
         (function waitForSdk() {
           if (initFirebase()) { subscribe(); return; }
-          if (++tries > 40) {                // ~4s of retries, then give up
-            animateTo(FALLBACK, 2200);
-            return;
-          }
+          if (++tries > 40) { animateTo(FALLBACK, 2200); return; }
           setTimeout(waitForSdk, 100);
         })();
       }
 
-      // Kick off when the number scrolls into view
       if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver((entries) => {
           if (entries[0].isIntersecting) { start(); io.disconnect(); }
         }, { threshold: 0.5 });
         io.observe(el);
-      } else {
-        start();
-      }
+      } else start();
     })();
 
-    /* ---------- Audio (unchanged behavior) ---------- */
+    /* ---------- Audio ---------- */
     (function () {
       const a = document.getElementById("hh-audio");
       const gate = document.getElementById("audioGate");
@@ -720,20 +708,21 @@
       a.volume = 0.65; a.loop = false; a.muted = false; a.preload = "auto";
       let hasPlayedThisView = false;
 
-      function showGate(msg) { gate.style.display = "flex"; toggle.style.display = "none"; startBtn.textContent = msg || "Turn on sound"; }
+      function t(key, fallback){ return (window.HH_ACTIVE_STRINGS && window.HH_ACTIVE_STRINGS[key]) || fallback; }
+      function showGate(msg) { gate.style.display = "flex"; toggle.style.display = "none"; startBtn.textContent = msg || t("audio_start","Turn on sound"); }
       function hideGate() { gate.style.display = "none"; }
-      function showToggle() { toggle.style.display = "inline-flex"; toggle.textContent = a.paused ? "Sound: off" : "Sound: on"; }
+      function showToggle() { toggle.style.display = "inline-flex"; toggle.textContent = a.paused ? t("audio_off","Sound: off") : t("audio_on","Sound: on"); }
 
       async function tryAutoplayOnce() {
         if (hasPlayedThisView) { showToggle(); return; }
         try { hasPlayedThisView = true; await a.play(); hideGate(); showToggle(); }
-        catch { hasPlayedThisView = false; showGate("Turn on sound"); }
+        catch { hasPlayedThisView = false; showGate(t("audio_start","Turn on sound")); }
       }
 
       async function playFromGestureOnce() {
         if (hasPlayedThisView) { showToggle(); return; }
         try { a.load(); hasPlayedThisView = true; await a.play(); hideGate(); showToggle(); }
-        catch (e) { console.error("Audio play failed:", e); hasPlayedThisView = false; showGate("Turn on sound"); }
+        catch (e) { console.error("Audio play failed:", e); hasPlayedThisView = false; showGate(t("audio_start","Turn on sound")); }
       }
 
       startBtn.addEventListener("click", playFromGestureOnce, { passive: true });
@@ -748,6 +737,11 @@
       a.addEventListener("error", () => { console.error("Audio failed to load:", audioUrl); showGate("Audio file not found — check intro.m4a path"); });
       window.addEventListener("load", () => { setTimeout(tryAutoplayOnce, 80); });
     })();
+  </script>
+
+  <script src="i18n.js"></script>
+  <script>
+    if (window.HH_I18N) { window.HH_I18N.init("home"); }
   </script>
 </body>
 </html>
