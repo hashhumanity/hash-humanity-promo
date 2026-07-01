@@ -423,7 +423,7 @@
 
         <div class="proofline reveal">
           <span class="num" id="proofNum">0</span>
-          <span class="lbl">humans verified &amp; counting</span>
+          <span class="lbl">members &amp; counting</span>
         </div>
 
         <div class="subline reveal">No ads · No trackers · No bot swarms</div>
@@ -617,7 +617,7 @@
     /* ---------- Live verified-human counter (Firebase RTDB) ---------- */
     (function () {
       const el = document.getElementById("proofNum");
-      const FALLBACK = 1222; // real verified-human total (offline fallback only)
+      const FALLBACK = 1222; // total members (offline fallback only)
       const fmt = (n) => n.toLocaleString("en-US");
 
       let current = 0;      // what's on screen now
@@ -663,7 +663,7 @@
 
       let firstValue = true;
       function subscribe() {
-        db.ref("stats/verifiedHumansCount").on(
+        db.ref("stats/usersCount").on(
           "value",
           (snap) => {
             const v = Number(snap.val());
