@@ -7,218 +7,326 @@
 <link rel="icon" href="logo.png" />
 <meta name="description" content="Hash Humanity — mission, who we are, why we exist, and the bigger picture." />
 
-<!-- ✅ GitHub Pages / subpath safe for relative assets -->
 <base href="./" />
 
-<!-- ✅ Inter (match your landing page) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
 <style>
   :root{
-    /* ✅ LIGHT PAGE */
-    color-scheme: light;
+    color-scheme:dark;
 
-    --bg:#ffffff;
-    --bg2:#f6f7f9;
-
-    --ink:#0b0b0b;
-    --muted:rgba(11,11,11,.70);
-    --muted2:rgba(11,11,11,.56);
-
-    /* ===== v9: premium glass + strokes ===== */
-    --glass: rgba(255,255,255,0.62);
-    --glass-strong: rgba(255,255,255,0.78);
-
-    --ring: rgba(0,0,0,0.10);
-    --ring-strong: rgba(0,0,0,0.20);
-
-    --radius: 20px;
-    --radius2: 26px;
-
-    /* ===== v9: softer “expensive” shadows ===== */
-    --shadow: 0 16px 64px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.55);
-    --shadow-strong: 0 24px 90px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.62);
-
-    /* ===== v9: sheen layer ===== */
-    --sheen: radial-gradient(900px 240px at 18% 0%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%);
-    --sheen2: radial-gradient(720px 220px at 18% 0%, rgba(255,255,255,.38), rgba(255,255,255,0) 58%);
-
-    --focus: 0 0 0 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.16) inset;
-
-    --wrap: 980px;
+    --bg:#020202;
+    --ink:#f7f7f7;
+    --muted:rgba(255,255,255,.72);
+    --muted2:rgba(255,255,255,.52);
+    --glass:rgba(255,255,255,.06);
+    --glass2:rgba(255,255,255,.10);
+    --stroke:rgba(255,255,255,.16);
+    --stroke2:rgba(255,255,255,.30);
+    --radius:24px;
+    --radius2:32px;
+    --wrap:980px;
+    --shadow:0 28px 110px rgba(0,0,0,.72);
+    --glow:0 0 34px rgba(255,255,255,.10);
   }
 
-  *{ box-sizing:border-box }
+  *{ box-sizing:border-box; }
 
   body{
     margin:0;
-    background:
-      radial-gradient(900px 540px at 50% -10%, rgba(0,0,0,.05) 0%, rgba(0,0,0,.02) 35%, rgba(255,255,255,0) 70%),
-      radial-gradient(1000px 520px at 12% 18%, rgba(0,0,0,.032) 0%, rgba(255,255,255,0) 56%),
-      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 55%, #ffffff 100%);
+    min-height:100vh;
     color:var(--ink);
-    font:16px/1.55 "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+    font:16px/1.6 "Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(circle at 50% -20%, rgba(255,255,255,.18), transparent 34%),
+      radial-gradient(circle at 10% 22%, rgba(255,255,255,.08), transparent 28%),
+      radial-gradient(circle at 88% 12%, rgba(255,255,255,.08), transparent 24%),
+      linear-gradient(180deg,#000 0%,#060606 48%,#000 100%);
     overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    isolation:isolate;
   }
 
-  .wrap{ max-width:var(--wrap); margin:0 auto; padding:28px 20px 80px }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    background:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:54px 54px;
+    mask-image:radial-gradient(circle at center, black 0%, transparent 76%);
+    pointer-events:none;
+  }
+
+  body::after{
+    content:"";
+    position:fixed;
+    inset:-40%;
+    z-index:-2;
+    background:
+      radial-gradient(circle, rgba(255,255,255,.65) 0 1px, transparent 1.5px),
+      radial-gradient(circle, rgba(255,255,255,.35) 0 1px, transparent 1.5px);
+    background-size:120px 120px,190px 190px;
+    opacity:.30;
+    animation:drift 34s linear infinite;
+    pointer-events:none;
+  }
+
+  @keyframes drift{
+    from{ transform:translate3d(0,0,0) rotate(0deg); }
+    to{ transform:translate3d(90px,60px,0) rotate(1deg); }
+  }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:var(--wrap);
+    margin:0 auto;
+    padding:24px 20px 80px;
+  }
 
   header{
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    padding: 10px 0 18px;
+    position:sticky;
+    top:0;
+    z-index:50;
+    margin:0 -20px;
+    padding:12px 20px 18px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:14px;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70), rgba(255,255,255,0));
-    backdrop-filter: saturate(150%) blur(14px);
-    border-bottom: 1px solid rgba(0,0,0,.08);
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background:linear-gradient(180deg, rgba(0,0,0,.88), rgba(0,0,0,.58), transparent);
+    backdrop-filter:blur(18px) saturate(150%);
   }
 
-  .brand{ display:flex; align-items:center; gap:14px; position:relative; }
-  .brand img{
-    width:58px; height:58px; border-radius:16px; object-fit:cover;
-    background:#fff;
-    border:1px solid rgba(0,0,0,.10);
-    box-shadow:0 10px 26px rgba(0,0,0,.14);
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+    position:relative;
   }
+
+  .brand::after{
+    content:"";
+    position:absolute;
+    left:76px;
+    bottom:-10px;
+    width:230px;
+    height:1px;
+    background:linear-gradient(90deg, rgba(255,255,255,.55), transparent);
+    box-shadow:0 0 16px rgba(255,255,255,.22);
+  }
+
+  .brand img{
+    width:58px;
+    height:58px;
+    border-radius:18px;
+    object-fit:cover;
+    background:#fff;
+    border:1px solid rgba(255,255,255,.24);
+    box-shadow:0 0 34px rgba(255,255,255,.15),0 18px 50px rgba(0,0,0,.75);
+  }
+
   .brand strong{
     letter-spacing:.22em;
     font-weight:900;
-    text-transform: uppercase;
-    font-size: clamp(18px, 3vw, 30px);
-    line-height: 1.02;
-    white-space: nowrap;
-    text-shadow: 0 0 18px rgba(0,0,0,.06);
+    text-transform:uppercase;
+    font-size:clamp(18px,3vw,30px);
+    line-height:1.02;
+    white-space:nowrap;
+    text-shadow:0 0 24px rgba(255,255,255,.18);
   }
 
-  .actions{ display:flex; gap:10px; flex-wrap:wrap }
+  .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
 
   .btn{
     appearance:none;
-    border:1px solid var(--ring);
+    border:1px solid var(--stroke);
     color:var(--ink);
-    background:
-      var(--sheen2),
-      var(--glass);
-    padding:10px 16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+    padding:11px 16px;
     border-radius:999px;
     font-weight:900;
-    letter-spacing:.08em;
-    text-transform: uppercase;
-    font-size: 12px;
-    backdrop-filter: blur(12px) saturate(140%);
-    box-shadow: var(--shadow);
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    font-size:12px;
+    backdrop-filter:blur(16px) saturate(150%);
+    box-shadow:0 20px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14);
     text-decoration:none;
     display:inline-flex;
     align-items:center;
     gap:10px;
     cursor:pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform .14s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease, opacity .18s ease, filter .18s ease;
-    user-select:none;
+    transition:transform .16s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
   }
-  .btn:hover{
-    transform: translateY(-1px);
-    background:
-      var(--sheen),
-      var(--glass-strong);
-    border-color: var(--ring-strong);
-    box-shadow: var(--shadow-strong);
-    filter: saturate(1.02);
-  }
-  .btn:active{ transform: translateY(0px); opacity:.95; }
-  .btn:focus-visible{ outline:none; box-shadow: var(--shadow-strong), var(--focus); }
 
-  /* Primary on white page = black pill */
-  .btn.primary{
-    background: linear-gradient(180deg, #101010 0%, #070707 100%);
-    color:#fff;
-    border-color: rgba(0,0,0,.92);
-    box-shadow: 0 22px 76px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.08);
+  .btn:hover{
+    transform:translateY(-2px);
+    border-color:var(--stroke2);
+    background:linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.07));
+    box-shadow:0 28px 100px rgba(0,0,0,.75),0 0 34px rgba(255,255,255,.10),inset 0 1px 0 rgba(255,255,255,.24);
   }
-  .btn.primary:hover{
-    box-shadow: 0 30px 110px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.10);
+
+  .hero{
+    padding:46px 0 26px;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 14px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.06);
+    color:rgba(255,255,255,.74);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.17em;
+    margin-bottom:18px;
+    backdrop-filter:blur(16px);
+    box-shadow:var(--glow);
+  }
+
+  .eyebrow-dot{
+    width:7px;
+    height:7px;
+    border-radius:999px;
+    background:#fff;
+    box-shadow:0 0 14px rgba(255,255,255,.85);
   }
 
   h1{
-    font-size: clamp(32px, 5vw, 60px);
-    line-height:1.05;
-    margin:18px 0 10px;
-    font-weight: 900;
-    letter-spacing: .01em;
+    font-size:clamp(40px,7vw,74px);
+    line-height:.98;
+    margin:0 0 14px;
+    font-weight:900;
+    letter-spacing:-.045em;
+    text-shadow:0 0 34px rgba(255,255,255,.12);
   }
-  .lead{ color:var(--muted); font-size:18px; margin:0 0 28px; max-width: 60ch; }
 
-  .grid{ display:grid; grid-template-columns:1fr; gap:16px }
+  .lead{
+    color:var(--muted);
+    font-size:clamp(17px,2vw,20px);
+    margin:0;
+    max-width:66ch;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+    margin-top:10px;
+  }
 
   .card{
-    background:
-      var(--sheen),
-      var(--glass);
-    border:1px solid var(--ring);
-    border-radius: var(--radius);
-    padding:22px;
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(14px) saturate(150%);
     position:relative;
     overflow:hidden;
+    background:linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.035));
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:var(--radius);
+    padding:24px;
+    box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.12);
+    backdrop-filter:blur(18px) saturate(150%);
   }
-  .card::after{
+
+  .card::before{
     content:"";
     position:absolute;
-    inset:-1px;
-    border-radius:inherit;
+    inset:0;
+    background:
+      linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent),
+      radial-gradient(circle at 18% 0%, rgba(255,255,255,.18), transparent 36%);
     pointer-events:none;
-    background: radial-gradient(700px 240px at 22% 0%, rgba(0,0,0,.045), rgba(255,255,255,0) 58%);
-    opacity:.85;
   }
 
   .card h2{
+    position:relative;
+    z-index:1;
     margin:0 0 10px;
     font-size:22px;
-    font-weight: 900;
-    position:relative;
-    z-index:1
-  }
-  .card p{
-    margin:0 0 8px;
-    color: rgba(11,11,11,.78);
-    position:relative;
-    z-index:1
+    font-weight:900;
+    letter-spacing:-.01em;
   }
 
-  .muted{ color:var(--muted) }
+  .card p{
+    position:relative;
+    z-index:1;
+    margin:0 0 8px;
+    color:var(--muted);
+  }
+
+  .card strong{
+    color:#fff;
+  }
+
+  .muted{
+    color:var(--muted2) !important;
+  }
 
   footer{
-    opacity:.78;
+    color:var(--muted2);
     font-size:13px;
-    padding:22px 0 40px;
-    color: var(--muted2);
+    padding:24px 0 40px;
   }
 
-  /* v9: mobile polish */
-  @media (hover: none){
-    .btn:hover{ transform:none; box-shadow: var(--shadow); border-color: var(--ring); }
+  @media (max-width:720px){
+    .wrap{
+      padding:18px 16px 72px;
+    }
+
+    header{
+      margin:0 -16px;
+      padding:10px 16px 14px;
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
+    .brand::after{
+      display:none;
+    }
+
+    .brand img{
+      width:52px;
+      height:52px;
+      border-radius:15px;
+    }
+
+    .brand strong{
+      font-size:clamp(20px,7vw,29px);
+      letter-spacing:.18em;
+    }
+
+    .btn{
+      padding:10px 14px;
+      font-size:11px;
+    }
+
+    .hero{
+      padding:34px 0 22px;
+    }
+
+    .card{
+      padding:21px;
+    }
   }
 
-  @media (max-width: 720px){
-    .wrap{ padding:20px 16px 72px; }
-    header{ padding: 10px 0 12px; }
-    .brand img{ width:54px; height:54px; border-radius: 16px; }
-    .btn{ padding:10px 14px; font-size:11px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .btn{ transition:none; }
-    .btn:hover{ transform:none; }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      animation:none !important;
+      transition:none !important;
+      scroll-behavior:auto !important;
+    }
   }
 </style>
 </head>
@@ -230,49 +338,78 @@
         <img src="logo.png" alt="Hash Humanity" />
         <strong>HASH HUMANITY</strong>
       </div>
+
       <nav class="actions">
-        <!-- Back button with robust routing to index.html -->
         <button class="btn" type="button" onclick="goBack()">← Back</button>
-        <!-- Open App button removed -->
+        <a class="btn" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch</a>
       </nav>
     </header>
 
     <main>
-      <h1>Mission &amp; Vision</h1>
-      <p class="lead">We’re building a human-verified social network where people — not bots, not click-farms, not rage-bait — set the tone.</p>
+      <section class="hero">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span>Mission • Vision • Human-first network</span>
+        </div>
+
+        <h1>Mission &amp; Vision</h1>
+
+        <p class="lead">
+          We’re building a human-verified social network where people — not bots, click-farms, spam engines, or rage-bait machines — set the tone.
+        </p>
+      </section>
 
       <section class="grid">
         <article class="card">
           <h2>Our Mission</h2>
-          <p>Make social spaces trustworthy again by ensuring every account is a real human via World ID (device or orb). With identity handled privately, we can focus on what matters: conversation, creation, and community.</p>
+          <p>
+            Make social spaces trustworthy again by ensuring every account is a real human through World ID.
+            With identity handled privately, Hash Humanity can focus on what matters: conversation, creation, and community.
+          </p>
         </article>
 
         <article class="card">
           <h2>Who We Are</h2>
-          <p>Builders and pragmatists. We ship quickly, keep the product focused, and prioritize clarity, reliability, and user trust. Hash Humanity is intentionally minimal — a clean, stable space for verified people.</p>
+          <p>
+            Builders and pragmatists. We ship quickly, keep the product focused, and prioritize clarity, reliability, and user trust.
+            Hash Humanity is intentionally minimal — a clean, stable space for verified people.
+          </p>
         </article>
 
         <article class="card">
           <h2>Why We’re Doing This</h2>
-          <p>Open social got wrecked by bots, spam, and incentives that reward outrage. Verification at the door lets us remove the bot problem without turning the product into an ad machine.</p>
+          <p>
+            Open social got wrecked by bots, spam, and incentives that reward outrage. Verification at the door helps remove the bot problem
+            without turning the product into another ad-soaked machine.
+          </p>
         </article>
 
         <article class="card">
           <h2>The Bigger Picture</h2>
-          <p>We’re laying the groundwork for a network where creators get paid directly (Pulse tipping, WLD), language barriers are optional (built-in translation), and data extraction isn’t the business model.</p>
-          <p class="muted">No dark patterns. No fake metrics. Just people talking — and tipping — in the open.</p>
+          <p>
+            We’re laying the groundwork for a network where creators get paid directly through Pulse tipping,
+            language barriers are reduced with built-in translation, and data extraction is not the business model.
+          </p>
+          <p class="muted">
+            No dark patterns. No fake metrics. Just people talking — and tipping — in the open.
+          </p>
         </article>
 
         <article class="card">
           <h2>How It Works</h2>
-          <p><strong>1) Verify with World ID</strong> — Prove you’re human (no PII shared with us).<br/>
-             <strong>2) Join the feed</strong> — Post, translate, react.<br/>
-             <strong>3) Tip with Pulse</strong> — WLD micro-tips via World App (mobile deep-links) or desktop WalletConnect.</p>
+          <p>
+            <strong>1) Verify with World ID</strong> — Prove you’re human without sharing biometric data with Hash Humanity.<br />
+            <strong>2) Join the feed</strong> — Post, translate, react, and connect.<br />
+            <strong>3) Tip with Pulse</strong> — Send WLD micro-tips through World App or WalletConnect.
+          </p>
         </article>
 
         <article class="card">
           <h2>What’s Next</h2>
-          <p>Device-first onboarding, better internationalization, creator tools, and open export APIs so you can take your content with you.</p>
+          <p>
+            Device-first onboarding, better internationalization, creator tools, stronger voice-room experiences,
+            and export paths so users are not trapped inside the platform.
+          </p>
         </article>
       </section>
     </main>
@@ -283,12 +420,17 @@
   </div>
 
 <script>
-  document.getElementById('y').textContent = new Date().getFullYear();
+  document.getElementById("y").textContent = new Date().getFullYear();
 
   async function probe(url){
-    try { const r = await fetch(url, { method: 'HEAD', cache: 'no-store' }); return r.ok; }
-    catch { return false; }
+    try {
+      const r = await fetch(url, { method: "HEAD", cache: "no-store" });
+      return r.ok;
+    } catch {
+      return false;
+    }
   }
+
   async function goBack(){
     const candidates = [
       "index.html",
@@ -297,9 +439,14 @@
       "/index.html",
       "promo.html"
     ];
+
     for (const url of candidates){
-      if (await probe(url)) { location.href = url; return; }
+      if (await probe(url)) {
+        location.href = url;
+        return;
+      }
     }
+
     history.back();
   }
 </script>
