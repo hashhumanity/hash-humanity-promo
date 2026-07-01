@@ -91,19 +91,39 @@
     padding:16px 0;
   }
 
-  .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand{ display:flex; align-items:center; gap:16px; min-width:0; }
   .brand img{
-    width:52px; height:52px; border-radius:15px; object-fit:cover; background:#fff;
+    width:60px; height:60px; border-radius:16px; object-fit:cover; background:#fff;
     border:1px solid rgba(255,255,255,.24);
     box-shadow:0 0 30px rgba(255,255,255,.14),0 14px 44px rgba(0,0,0,.7);
   }
   .brand strong{
-    letter-spacing:.24em; font-weight:900; text-transform:uppercase;
-    font-size:clamp(17px,2.4vw,26px); line-height:1; white-space:nowrap;
+    letter-spacing:.22em; font-weight:900; text-transform:uppercase;
+    font-size:clamp(24px,3vw,36px); line-height:1; white-space:nowrap;
     text-shadow:0 0 22px rgba(255,255,255,.16);
   }
 
-  .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+  .lang-switch{ position:relative; }
+  .lang-btn{ min-width:58px; font-weight:800; letter-spacing:.1em; }
+  .lang-menu{
+    list-style:none; margin:0; padding:6px; position:absolute; top:calc(100% + 8px); right:0;
+    min-width:190px; max-height:320px; overflow-y:auto;
+    background:#0d0d0d; border:1px solid var(--stroke); border-radius:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.6);
+    display:none; z-index:60;
+  }
+  .lang-menu.open{ display:block; }
+  .lang-menu li{ display:block; }
+  .lang-menu button{
+    width:100%; text-align:left; background:transparent; border:0; color:var(--muted);
+    padding:10px 12px; border-radius:9px; cursor:pointer; font-size:13px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .lang-menu button:hover{ background:var(--accent-soft); color:var(--ink); }
+  .lang-menu button[aria-selected="true"]{ color:var(--accent); }
+  .lang-menu .code{ font-size:10px; letter-spacing:.1em; color:var(--muted2); }
 
   .btn{
     appearance:none; border:1px solid var(--stroke); color:var(--ink);
@@ -236,10 +256,9 @@
 
   @media (max-width:720px){
     .wrap{ padding:0 16px 72px; }
-    header{ flex-direction:column; align-items:flex-start; padding:10px 0 12px; }
-    .brand img{ width:48px; height:48px; border-radius:14px; }
-    .brand strong{ font-size:clamp(19px,7vw,27px); letter-spacing:.18em; }
-    .btn{ padding:10px 14px; font-size:11px; }
+    header{ flex-direction:column; align-items:stretch; padding:12px 0; gap:12px; }
+    .brand{ justify-content:center; }
+    .actions{ justify-content:center; }
     .hero{ padding:34px 0 4px; }
     .panel{ padding:22px 18px; }
     .row{ grid-template-columns:1fr; }
@@ -263,8 +282,14 @@
         <strong>HASH HUMANITY</strong>
       </div>
       <nav class="actions">
-        <button class="btn" type="button" onclick="goBack()">← Back</button>
-        <a class="btn" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch</a>
+        <div class="lang-switch" id="langSwitch">
+          <button class="btn lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="langBtnLabel">EN</span>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox"></ul>
+        </div>
+        <button class="btn" type="button" onclick="goBack()" data-i18n="back">← Back</button>
+        <a class="btn" href="https://hashhumanity.world" target="_blank" rel="noopener" data-i18n="launch">Launch</a>
       </nav>
     </header>
 
@@ -272,12 +297,12 @@
       <section class="hero">
         <div class="eyebrow reveal">
           <span class="eyebrow-dot"></span>
-          <span>Join · Human-verified · World ID only</span>
+          <span data-i18n="eyebrow">Join · Human-verified · World ID only</span>
         </div>
 
-        <h1 class="reveal">Come be <em>human</em> with us.</h1>
+        <h1 class="reveal" data-i18n-html="h1">Come be <em>human</em> with us.</h1>
 
-        <p class="lead reveal">
+        <p class="lead reveal" data-i18n-html="lead">
           Hash Humanity is a network built for <strong>real people</strong> — no bots, no spam, no rage-bait.
           Tell us a bit about you and we'll help you get onboarded.
         </p>
@@ -287,35 +312,35 @@
         <div id="formWrap">
           <div class="row">
             <div class="field">
-              <label for="name">Your name</label>
-              <input id="name" type="text" placeholder="First name" autocomplete="name" />
+              <label for="name" data-i18n="lbl_name">Your name</label>
+              <input id="name" type="text" data-i18n-placeholder="ph_name" placeholder="First name" autocomplete="name" />
             </div>
             <div class="field">
-              <label for="email">Email</label>
+              <label for="email" data-i18n="lbl_email">Email</label>
               <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
             </div>
           </div>
 
           <div class="field">
-            <label for="role">What brings you here?</label>
+            <label for="role" data-i18n="lbl_role">What brings you here?</label>
             <select id="role">
-              <option value="">Choose one…</option>
-              <option value="member">I want to join as a member</option>
-              <option value="creator">I'm a creator</option>
-              <option value="builder">I'm a builder / developer</option>
-              <option value="partner">Partnership / organization</option>
-              <option value="press">Press / media</option>
-              <option value="other">Something else</option>
+              <option value="" data-i18n="opt_choose">Choose one…</option>
+              <option value="member" data-i18n="opt_member">I want to join as a member</option>
+              <option value="creator" data-i18n="opt_creator">I'm a creator</option>
+              <option value="builder" data-i18n="opt_builder">I'm a builder / developer</option>
+              <option value="partner" data-i18n="opt_partner">Partnership / organization</option>
+              <option value="press" data-i18n="opt_press">Press / media</option>
+              <option value="other" data-i18n="opt_other">Something else</option>
             </select>
           </div>
 
           <div class="field">
-            <label for="message">Anything you'd like us to know? <span class="optional">(optional)</span></label>
-            <textarea id="message" maxlength="2000" placeholder="What are you hoping to do on Hash Humanity? Any questions?"></textarea>
+            <label for="message" data-i18n-html="lbl_message">Anything you'd like us to know? <span class="optional">(optional)</span></label>
+            <textarea id="message" maxlength="2000" data-i18n-placeholder="ph_message" placeholder="What are you hoping to do on Hash Humanity? Any questions?"></textarea>
           </div>
 
           <button id="submitBtn" class="submit" type="button">
-            <span class="spinner"></span><span class="submit-label">Request an invite</span>
+            <span class="spinner"></span><span class="submit-label" data-i18n="submit">Request an invite</span>
           </button>
 
           <div id="status" class="status"></div>
@@ -325,16 +350,16 @@
           <div class="check">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
-          <h2>You're <em>on the list</em>.</h2>
-          <p>Thanks for your interest — we've got your details and someone from our team will reach out at the email you gave us. Want to look around now?</p>
-          <a class="btn launch" href="https://hashhumanity.world" target="_blank" rel="noopener">Launch Hash Humanity</a>
+          <h2 data-i18n-html="done_h2">You're <em>on the list</em>.</h2>
+          <p data-i18n="done_p">Thanks for your interest — we've got your details and someone from our team will reach out at the email you gave us. Want to look around now?</p>
+          <a class="btn launch" href="https://hashhumanity.world" target="_blank" rel="noopener" data-i18n="launch_full">Launch Hash Humanity</a>
         </div>
       </section>
     </main>
 
     <footer>
       <span>© <span id="y"></span> Hash Humanity</span>
-      <span class="tag">You are the proof, not the product.</span>
+      <span class="tag" data-i18n="footer_tag">You are the proof, not the product.</span>
     </footer>
   </div>
 
@@ -362,6 +387,8 @@
     if (tries < 40) setTimeout(function(){ initFn(tries + 1); }, 100);
   })();
 
+  function t(key, fallback){ return (window.HH_ACTIVE_STRINGS && window.HH_ACTIVE_STRINGS[key]) || fallback; }
+
   const statusEl = document.getElementById("status");
   function showStatus(msg){ statusEl.className = "status show err"; statusEl.textContent = msg; }
   function hideStatus(){ statusEl.className = "status"; }
@@ -378,18 +405,16 @@
     const role = document.getElementById("role").value;
     const message = document.getElementById("message").value.trim();
 
-    // Client-side validation mirrors the backend
-    if (name.length < 2) return showStatus("Please tell us your name.");
-    if (!emailValid(email)) return showStatus("Please enter a valid email so we can reach you.");
-    if (!role) return showStatus("Please choose what brings you here.");
-
-    if (!functions) return showStatus("Couldn't reach our servers. Check your connection and try again.");
+    if (name.length < 2) return showStatus(t("err_name","Please tell us your name."));
+    if (!emailValid(email)) return showStatus(t("err_email","Please enter a valid email so we can reach you."));
+    if (!role) return showStatus(t("err_role","Please choose what brings you here."));
+    if (!functions) return showStatus(t("err_offline","Couldn't reach our servers. Check your connection and try again."));
 
     const payload = { name, email, role, message, sourceLocation: "onboarding_page" };
 
     submitBtn.disabled = true;
     submitBtn.classList.add("loading");
-    submitLabel.textContent = "Sending…";
+    submitLabel.textContent = t("sending","Sending…");
 
     try {
       const submitJoinInquiry = functions.httpsCallable("submitJoinInquiry");
@@ -398,10 +423,10 @@
       document.getElementById("doneWrap").classList.add("show");
     } catch (err) {
       console.error("submitJoinInquiry failed:", err);
-      showStatus((err && err.message) ? err.message : "Something went wrong. Please try again.");
+      showStatus((err && err.message) ? err.message : t("err_generic","Something went wrong. Please try again."));
       submitBtn.disabled = false;
       submitBtn.classList.remove("loading");
-      submitLabel.textContent = "Request an invite";
+      submitLabel.textContent = t("submit","Request an invite");
     }
   });
 
@@ -482,6 +507,11 @@
     for (const url of candidates){ if (await probe(url)) { location.href = url; return; } }
     history.back();
   }
+</script>
+
+<script src="i18n.js"></script>
+<script>
+  if (window.HH_I18N) { window.HH_I18N.init("join"); }
 </script>
 </body>
 </html>
