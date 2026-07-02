@@ -94,6 +94,7 @@
     .reveal.in{ opacity:1; transform:none; }
 
     header{
+      position:-webkit-sticky;
       position:sticky;
       top:0;
       z-index:50;
@@ -101,6 +102,7 @@
       align-items:center;
       border-bottom:1px solid rgba(255,255,255,.08);
       background:linear-gradient(180deg, rgba(0,0,0,.88), rgba(0,0,0,.50), transparent);
+      -webkit-backdrop-filter:blur(18px) saturate(150%);
       backdrop-filter:blur(18px) saturate(150%);
       padding:16px 0;
     }
@@ -368,16 +370,34 @@
     }
 
     @media (max-width:720px){
-      header{ padding:10px 0 8px; }
+      :root{ --hh-mobile-header-height:112px; }
+
+      body{
+        padding-top:calc(var(--hh-mobile-header-height) + env(safe-area-inset-top, 0px));
+      }
+
+      header{
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10000;
+        min-height:var(--hh-mobile-header-height);
+        padding:calc(10px + env(safe-area-inset-top, 0px)) 0 8px;
+        background:linear-gradient(180deg, rgba(0,0,0,.96), rgba(0,0,0,.86));
+      }
+
       .wrap{ padding:0 18px; }
-      .header-inner{ flex-direction:column; align-items:stretch; gap:11px; }
-      .brand{ min-width:0; }
+      .header-inner{ flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+      .brand{ width:100%; min-width:0; justify-content:center; }
       .brand img{ width:44px; height:44px; border-radius:13px; flex:0 0 auto; }
       .brand span{ font-size:clamp(16px,5.6vw,24px); letter-spacing:.09em; min-width:0; overflow:hidden; text-overflow:ellipsis; }
-      .actions{ width:100%; justify-content:flex-end; }
+      header .actions{ width:100%; justify-content:center; align-items:center; gap:10px; }
+      .lang-switch{ display:inline-flex; justify-content:center; }
+      .lang-menu{ left:50%; right:auto; transform:translateX(-50%); }
       .btn{ padding:10px 14px; font-size:11px; }
       h1{ font-size:clamp(42px,12vw,62px); }
-      .hero{ padding-top:30px; }
+      .hero{ padding-top:24px; }
       .grid{ grid-template-columns:1fr; gap:14px; }
       .cta{ padding:22px; }
       .cta img{ width:128px; height:128px; }
