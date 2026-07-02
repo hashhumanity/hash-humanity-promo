@@ -1,12 +1,1007 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>#HUMANITY</title>
-  </head>
-  <body style="margin:0;background:#000;color:#fff">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <title>Hash Humanity — Verified Humans Only</title>
+  <meta name="description" content="Hash Humanity is a human-verified social network powered by World ID. No bots. No ads. Live voice rooms, real profiles, and Pulse tipping built in." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#020202" />
+  <meta name="apple-mobile-web-app-title" content="Hash Humanity" />
+  <link rel="canonical" href="https://hashhumanity.promo/" />
+
+  <!-- ══════════════════════════════════════════════════════
+       Share previews: Facebook, iMessage, WhatsApp, Discord,
+       Slack, X/Twitter, SMS/RCS, LinkedIn, etc.
+       IMPORTANT: the image URL must be public, absolute, and
+       1200x630. The version query helps bust scraper caches.
+       ══════════════════════════════════════════════════════ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Hash Humanity" />
+  <meta property="og:title" content="Hash Humanity — You are the proof, not the product." />
+  <meta property="og:description" content="Human-verified social. No bots. No ads. Live voice rooms and Pulse tipping for real people." />
+  <meta property="og:url" content="https://hashhumanity.promo/" />
+  <meta property="og:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-1" />
+  <meta property="og:image:secure_url" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-1" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Hash Humanity — You are the proof, not the product." />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hash Humanity — Verified Humans Only" />
+  <meta name="twitter:description" content="Human-verified social. No bots. No ads. Live voice rooms and Pulse tipping for real people." />
+  <meta name="twitter:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-1" />
+  <meta name="twitter:image:alt" content="Hash Humanity — You are the proof, not the product." />
+  <meta name="twitter:url" content="https://hashhumanity.promo/" />
+
+  <link rel="icon" href="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="preload" as="image" href="og-card-globe-dark-1200x630.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <base href="./" />
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <style>
+    :root{
+      color-scheme: dark;
+
+      --bg:#020202;
+      --ink:#f7f7f7;
+      --muted:rgba(255,255,255,.72);
+      --muted2:rgba(255,255,255,.50);
+
+      --stroke:rgba(255,255,255,.16);
+      --stroke2:rgba(255,255,255,.30);
+
+      --accent:#38e0ff;
+      --accent-soft:rgba(56,224,255,.16);
+
+      --radius:22px;
+      --radius2:30px;
+      --wrap:1200px;
+
+      --shadow:0 28px 110px rgba(0,0,0,.70);
+      --glow:0 0 34px rgba(255,255,255,.10);
+      --appPreview:none;
+
+      --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --serif:"Instrument Serif", Georgia, "Times New Roman", serif;
+      --sans:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      color:var(--ink);
+      font:16px/1.6 var(--sans);
+      background:linear-gradient(180deg, #000 0%, #050505 48%, #000 100%);
+      -webkit-font-smoothing:antialiased;
+      isolation:isolate;
+      /* body itself no longer scrolls — #scrollArea does. This is what makes
+         the header bulletproof: it lives outside the scrolling region, so it
+         never needs position:fixed/sticky and can never "scroll away". */
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      height:100vh;
+      height:100dvh;
+    }
+
+    #humanity-field{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(56,224,255,.16), transparent 40%),
+        radial-gradient(circle at 50% -10%, rgba(255,255,255,.10), transparent 32%),
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+      background-size:auto, auto, 60px 60px, 60px 60px;
+      -webkit-mask-image:radial-gradient(circle at 50% 20%, black 0%, transparent 78%);
+      mask-image:radial-gradient(circle at 50% 20%, black 0%, transparent 78%);
+      pointer-events:none;
+    }
+
+    a{ color:inherit; }
+    img{ max-width:100%; display:block; }
+    ::selection{ background:rgba(255,255,255,.22); }
+
+    .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 26px; }
+
+    .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+    .reveal.in{ opacity:1; transform:none; }
+
+    /* ---------- Scroll shell ---------- */
+    /* header sits in normal flow, always visible. #scrollArea is the ONLY
+       thing that scrolls, and it's a plain block-level element — no fixed,
+       no sticky, nothing that can break across browsers/WebViews. */
+    #scrollArea{
+      flex:1 1 auto;
+      min-height:0;
+      overflow-y:auto;
+      overflow-x:hidden;
+      overflow-x:clip;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    header{
+      flex:0 0 auto;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(0,0,0,.88), rgba(0,0,0,.50), transparent);
+      -webkit-backdrop-filter:blur(18px) saturate(150%);
+      backdrop-filter:blur(18px) saturate(150%);
+      padding:16px 0;
+    }
+
+    .header-inner{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:18px; }
+
+    .brand{ display:flex; align-items:center; gap:16px; }
+
+    .brand img{
+      width:66px; height:66px; border-radius:18px; object-fit:cover;
+      background:#fff; border:1px solid rgba(255,255,255,.24);
+      box-shadow:0 0 30px rgba(255,255,255,.14), 0 14px 44px rgba(0,0,0,.7);
+    }
+
+    .brand span{
+      font-weight:900; letter-spacing:.22em; text-transform:uppercase;
+      font-size:clamp(24px,3vw,38px); line-height:1; white-space:nowrap;
+      text-shadow:0 0 22px rgba(255,255,255,.16);
+    }
+
+    .actions{ display:flex; align-items:center; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
+
+    .lang-switch{ position:relative; }
+    .lang-btn{ min-width:58px; font-weight:800; letter-spacing:.1em; }
+    .lang-menu{
+      list-style:none; margin:0; padding:6px; position:absolute; top:calc(100% + 8px); right:0;
+      min-width:190px; max-height:320px; overflow-y:auto;
+      background:#0d0d0d; border:1px solid var(--stroke); border-radius:14px;
+      box-shadow:0 24px 60px rgba(0,0,0,.6);
+      display:none; z-index:60;
+    }
+    .lang-menu.open{ display:block; }
+    .lang-menu li{ display:block; }
+    .lang-menu button{
+      width:100%; text-align:left; background:transparent; border:0; color:var(--muted);
+      padding:10px 12px; border-radius:9px; cursor:pointer; font-size:13px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .lang-menu button:hover{ background:var(--accent-soft); color:var(--ink); }
+    .lang-menu button[aria-selected="true"]{ color:var(--accent); }
+    .lang-menu .code{ font-size:10px; letter-spacing:.1em; color:var(--muted2); }
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--stroke);
+      color:var(--ink);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+      padding:12px 18px; border-radius:999px;
+      font-weight:800; letter-spacing:.11em; text-transform:uppercase; font-size:12px;
+      cursor:pointer; text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center; gap:9px;
+      backdrop-filter:blur(16px) saturate(150%);
+      box-shadow:0 16px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.14);
+      transition:transform .16s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      border-color:var(--stroke2);
+      background:linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.07));
+    }
+
+    .btn.primary{
+      position:relative; overflow:hidden;
+      background:linear-gradient(180deg, #fff, #cfcfcf);
+      color:#000; border-color:rgba(255,255,255,.88);
+      box-shadow:0 0 42px rgba(56,224,255,.28), 0 20px 70px rgba(0,0,0,.7);
+    }
+
+    .btn.primary::after{
+      content:""; position:absolute; top:0; left:-120%; width:60%; height:100%;
+      background:linear-gradient(100deg, transparent, rgba(255,255,255,.85), transparent);
+      transform:skewX(-18deg);
+      animation:sweep 4.5s ease-in-out infinite;
+    }
+    @keyframes sweep{ 0%,55%{ left:-120%; } 78%,100%{ left:130%; } }
+
+    main{ padding-bottom:74px; }
+
+    .hero{
+      display:grid; grid-template-columns:1.08fr 1fr; align-items:center; gap:58px;
+      padding:64px 0 40px;
+    }
+
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:7px 15px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.05);
+      color:rgba(255,255,255,.74);
+      font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em;
+      margin-bottom:22px; backdrop-filter:blur(16px); box-shadow:var(--glow);
+    }
+
+    .eyebrow-dot{
+      width:7px; height:7px; border-radius:999px; background:var(--accent);
+      box-shadow:0 0 12px rgba(56,224,255,.9);
+      animation:beat 1.9s ease-in-out infinite;
+    }
+    @keyframes beat{ 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(1.5); opacity:.55; } }
+
+    h1{
+      margin:0 0 16px; font-weight:900; letter-spacing:-.045em;
+      font-size:clamp(46px,6.8vw,92px); line-height:.96;
+      text-shadow:0 0 34px rgba(255,255,255,.12);
+    }
+    h1 em{
+      font-family:var(--serif); font-style:italic; font-weight:400;
+      letter-spacing:-.01em; color:#fff;
+    }
+
+    .lead{ color:var(--muted); font-size:clamp(16px,2vw,20px); margin:14px 0 20px; max-width:38rem; }
+    .lead strong{ color:#fff; font-weight:700; }
+
+    .subline{
+      color:rgba(255,255,255,.62); font-family:var(--mono); font-size:12px;
+      text-transform:uppercase; letter-spacing:.16em; margin:16px 0 18px;
+    }
+
+    .proofline{ display:flex; align-items:baseline; gap:12px; margin:22px 0 4px; font-family:var(--mono); }
+    .proofline .num{
+      font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:-.02em;
+      font-variant-numeric:tabular-nums; color:var(--accent);
+      text-shadow:0 0 22px rgba(56,224,255,.35);
+    }
+    .proofline .lbl{ color:var(--muted2); font-size:11px; text-transform:uppercase; letter-spacing:.16em; }
+
+    .device-orbit{ position:relative; display:flex; align-items:center; justify-content:center; padding:18px 0; isolation:isolate; }
+
+    .device-orbit::before{
+      content:""; position:absolute; width:112%; aspect-ratio:1; border-radius:50%;
+      border:1px solid rgba(255,255,255,.14);
+      background:radial-gradient(circle, rgba(255,255,255,.09), transparent 62%);
+      transform:rotate(-16deg); z-index:0;
+    }
+    .device-orbit::after{
+      content:""; position:absolute; width:78%; aspect-ratio:1; border-radius:50%;
+      border:1px dashed rgba(255,255,255,.18);
+      animation:spin 44s linear infinite; z-index:0;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    .device{
+      width:min(560px,100%); aspect-ratio:10/19; position:relative; z-index:1;
+      border-radius:44px; padding:14px;
+      background:linear-gradient(145deg,#2a2a2a,#030303 42%,#151515);
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 54px 150px rgba(0,0,0,.86), 0 0 70px rgba(255,255,255,.12),
+        inset 0 2px 0 rgba(255,255,255,.14), inset 0 0 0 1px rgba(255,255,255,.08);
+      transform:perspective(1200px) rotateY(-12deg) rotateX(5deg) translateY(8px);
+      animation:float 7s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{ transform:perspective(1200px) rotateY(-12deg) rotateX(5deg) translateY(8px); }
+      50%{ transform:perspective(1200px) rotateY(-9deg) rotateX(4deg) translateY(-6px); }
+    }
+
+    .screen{
+      width:100%; height:100%; border-radius:31px; overflow:hidden; position:relative;
+      background:var(--appPreview) center/cover no-repeat, linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.02));
+      background-color:#050505;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), inset 0 28px 80px rgba(0,0,0,.52);
+    }
+    .screen::before{
+      content:""; position:absolute; top:10px; left:50%; transform:translateX(-50%);
+      width:120px; height:14px; border-radius:999px; background:rgba(0,0,0,.88);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.12); z-index:4;
+    }
+    .screen::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(120deg, transparent 0 36%, rgba(255,255,255,.14) 42%, transparent 48%);
+      mix-blend-mode:screen; opacity:.35; pointer-events:none;
+      animation:scan 6s ease-in-out infinite;
+      z-index:3;
+    }
+    .phone-ui{
+      position:absolute;
+      inset:34px 14px 14px;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      gap:11px;
+      padding:20px 14px 14px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(56,224,255,.22), transparent 32%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+    }
+    .phone-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:rgba(255,255,255,.82);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .phone-pill{
+      border:1px solid rgba(56,224,255,.34);
+      color:#aef4ff;
+      border-radius:999px;
+      padding:5px 8px;
+      background:rgba(56,224,255,.10);
+      box-shadow:0 0 18px rgba(56,224,255,.12);
+    }
+    .phone-card{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;
+      background:rgba(0,0,0,.38);
+      padding:12px;
+      box-shadow:0 18px 45px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.08);
+      backdrop-filter:blur(14px);
+    }
+    .phone-card.hero-card{
+      padding:16px 13px;
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+    }
+    .phone-title{
+      margin:0 0 6px;
+      font-size:18px;
+      line-height:1.05;
+      letter-spacing:-.04em;
+      font-weight:900;
+    }
+    .phone-copy{
+      margin:0;
+      color:rgba(255,255,255,.66);
+      font-size:11px;
+      line-height:1.35;
+    }
+    .phone-feed{
+      display:grid;
+      gap:9px;
+    }
+    .phone-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .phone-avatar{
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      flex:0 0 auto;
+      background:linear-gradient(135deg, #fff, #38e0ff);
+      box-shadow:0 0 22px rgba(56,224,255,.25);
+    }
+    .phone-lines{
+      flex:1;
+      min-width:0;
+      display:grid;
+      gap:5px;
+    }
+    .phone-line{
+      height:7px;
+      border-radius:999px;
+      background:rgba(255,255,255,.22);
+    }
+    .phone-line.short{ width:64%; }
+    .phone-actions{
+      margin-top:12px;
+      display:flex;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+    .mini-btn{
+      border-radius:999px;
+      padding:6px 8px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.82);
+      font-family:var(--mono);
+      font-size:9px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .mini-btn.hot{
+      background:#fff;
+      color:#000;
+    }
+    @keyframes scan{ 0%,100%{ transform:translateX(-8%); } 50%{ transform:translateX(8%); } }
+
+    .sec-head{ margin:70px 0 26px; }
+    .sec-head .kicker{
+      font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--muted2); display:block; margin-bottom:10px;
+    }
+    .sec-head h2{ margin:0; font-weight:900; letter-spacing:-.03em; font-size:clamp(28px,4vw,44px); }
+    .sec-head h2 em{ font-family:var(--serif); font-style:italic; font-weight:400; }
+
+    .grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin:0 0 42px; }
+
+    .card{
+      position:relative; overflow:hidden; border-radius:var(--radius);
+      padding:24px 20px 22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.13);
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.10);
+      backdrop-filter:blur(18px) saturate(150%);
+      transition:transform .3s cubic-bezier(.16,1,.3,1), border-color .3s ease;
+    }
+    .card:hover{ transform:translateY(-6px); border-color:rgba(56,224,255,.42); }
+    .card:hover .idx{ color:var(--accent); }
+    .card::before{
+      content:""; position:absolute; inset:0;
+      background:radial-gradient(circle at 20% 0%, rgba(255,255,255,.16), transparent 40%);
+      opacity:.8; pointer-events:none;
+    }
+    .card .idx{
+      font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--muted2);
+      position:relative; z-index:1; display:block; margin-bottom:14px;
+      transition:color .3s ease;
+    }
+    .card h3{ position:relative; z-index:1; margin:0 0 9px; font-weight:800; font-size:18px; line-height:1.18; }
+    .card p{ position:relative; z-index:1; margin:0; color:var(--muted); font-size:14.5px; }
+
+    .cta{
+      position:relative; overflow:hidden; margin:12px 0 22px; padding:28px;
+      border-radius:var(--radius2);
+      background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.16);
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px;
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter:blur(18px) saturate(150%);
+    }
+    .cta::before{
+      content:""; position:absolute; inset:-1px;
+      background:radial-gradient(circle at 16% 0%, rgba(255,255,255,.16), transparent 36%);
+      pointer-events:none;
+    }
+    .cta img{
+      position:relative; z-index:1; width:156px; height:156px; background:#fff;
+      border-radius:22px; padding:10px; object-fit:contain;
+      box-shadow:0 0 44px rgba(255,255,255,.16), 0 22px 70px rgba(0,0,0,.72);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .cta .txt{ position:relative; z-index:1; flex:1 1 340px; min-width:0; }
+    .cta h2{ margin:0 0 7px; font-weight:900; font-size:clamp(24px,3vw,30px); line-height:1.15; letter-spacing:-.02em; }
+    .cta h2 em{ font-family:var(--serif); font-style:italic; font-weight:400; }
+    .cta p{ margin:0; color:var(--muted); }
+    .cta p strong{ color:#fff; }
+
+    .fineprint{ margin-top:12px; color:var(--muted2); font-size:13px; max-width:52rem; }
+
+    footer{
+      color:var(--muted2); font-size:13px; padding:24px 0 0;
+      border-top:1px solid rgba(255,255,255,.08); margin-top:8px;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    }
+    footer .tag{ font-family:var(--serif); font-style:italic; font-size:15px; color:var(--muted); }
+
+    .audio-gate{ position:fixed; left:12px; right:12px; bottom:12px; z-index:9999; display:none; align-items:center; justify-content:center; }
+    .audio-btn{
+      width:min(580px,96vw); height:56px; border-radius:999px; font-weight:900;
+      letter-spacing:.11em; text-transform:uppercase; border:1px solid rgba(255,255,255,.25);
+      background:rgba(0,0,0,.74); color:#fff; backdrop-filter:blur(18px);
+      box-shadow:0 0 34px rgba(255,255,255,.14), 0 26px 90px rgba(0,0,0,.8); cursor:pointer;
+    }
+    .audio-toggle{
+      position:fixed; right:16px; bottom:16px; z-index:9998; display:none;
+      border:1px solid rgba(255,255,255,.20); background:rgba(0,0,0,.68); color:#fff;
+      padding:10px 14px; border-radius:999px; font-weight:900; letter-spacing:.08em;
+      text-transform:uppercase; backdrop-filter:blur(16px);
+      box-shadow:0 0 28px rgba(255,255,255,.10), 0 20px 70px rgba(0,0,0,.65); cursor:pointer; font-size:11px;
+    }
+
+    @media (max-width:1100px){
+      .hero{ grid-template-columns:1fr; gap:34px; padding:44px 0 24px; }
+      .device{ transform:none; animation:none; max-width:500px; }
+      .grid{ grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media (max-width:720px){
+      header{
+        padding:calc(10px + env(safe-area-inset-top, 0px)) 0 8px;
+      }
+
+      .wrap{ padding-left:18px; padding-right:18px; }
+
+      header .wrap.header-inner{
+        display:grid;
+        grid-template-columns:1fr;
+        justify-items:center;
+        align-items:center;
+        gap:10px;
+      }
+
+      header .brand{
+        width:max-content;
+        max-width:calc(100vw - 24px);
+        min-width:0;
+        justify-content:center;
+        margin:0 auto;
+        gap:12px;
+      }
+
+      .brand img{ width:44px; height:44px; border-radius:13px; flex:0 0 auto; }
+      .brand span{ font-size:clamp(16px,5.6vw,24px); letter-spacing:.09em; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+
+      header .actions{
+        width:max-content;
+        max-width:calc(100vw - 24px);
+        margin:0 auto;
+        justify-content:center;
+        align-items:center;
+        gap:10px;
+        flex-wrap:nowrap;
+      }
+
+      .lang-switch{ display:inline-flex; justify-content:center; }
+      .lang-menu{ left:50%; right:auto; transform:translateX(-50%); }
+      .btn{ padding:10px 14px; font-size:11px; }
+      h1{ font-size:clamp(42px,12vw,62px); }
+      .hero{ padding-top:0; }
+      .grid{ grid-template-columns:1fr; gap:14px; }
+      .cta{ padding:22px; }
+      .cta img{ width:128px; height:128px; }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{ animation:none !important; transition:none !important; }
+      .reveal{ opacity:1; transform:none; }
+      .device{ transform:none; }
+      #humanity-field{ display:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="humanity-field" aria-hidden="true"></canvas>
+
+  <audio id="hh-audio" preload="auto" playsinline></audio>
+
+  <div class="audio-gate" id="audioGate">
+    <button class="audio-btn" id="audioStartBtn" type="button">Turn on sound</button>
+  </div>
+
+  <button class="audio-toggle" id="audioToggle" type="button" aria-label="Toggle audio">Sound: on</button>
+
+  <!-- Header lives OUTSIDE #scrollArea, in normal flex flow. It is never
+       position:fixed or position:sticky, so it cannot "scroll away" or
+       fail to stick in any browser or WebView — it simply isn't part of
+       the scrolling content at all. -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Hash Humanity">
+        <img src="logo.png" alt="Hash Humanity logo" />
+        <span>HASH&nbsp;HUMANITY</span>
+      </div>
+
+      <nav class="actions" aria-label="Primary">
+        <div class="lang-switch" id="langSwitch">
+          <button class="btn lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="langBtnLabel">EN</span>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox"></ul>
+        </div>
+        <a class="btn" href="mission.html" data-i18n="nav_learn">Learn more</a>
+        <a class="btn" href="join.html" data-i18n="nav_join">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="scrollArea">
+    <main class="wrap">
+      <section class="hero" id="home">
+        <div>
+          <div class="eyebrow reveal">
+            <span class="eyebrow-dot"></span>
+            <span data-i18n="eyebrow">Human-verified · World ID only</span>
+          </div>
+
+          <h1 class="reveal" data-i18n-html="h1">You are the proof,<br /><em>not the product.</em></h1>
+
+          <p class="lead reveal" data-i18n-html="lead">
+            Hash Humanity is a human-only network with World ID at the gate. Bots out, real people in.
+            Pulse tipping is built in, and <strong>Humanity Chat</strong> lets verified humans meet in live voice rooms.
+          </p>
+
+          <div class="proofline reveal">
+            <span class="num" id="memberNum">0</span>
+            <span class="lbl" data-i18n="member_lbl">members &amp; counting</span>
+          </div>
+
+          <div class="subline reveal" data-i18n="subline">No ads · No trackers · No bot swarms</div>
+
+          <div class="actions reveal" style="justify-content:flex-start;">
+            <a class="btn primary" href="https://hashhumanity.world" target="_blank" rel="noopener" data-i18n="launch">Launch now</a>
+          </div>
+        </div>
+
+        <div class="device-orbit reveal" aria-hidden="true">
+          <div class="device">
+            <div class="screen">
+              <div class="phone-ui">
+                <div class="phone-bar">
+                  <span>Hash Humanity</span>
+                  <span class="phone-pill">World ID</span>
+                </div>
+
+                <div class="phone-card hero-card">
+                  <p class="phone-title">Verified humans only.</p>
+                  <p class="phone-copy">No bot swarms. No ad-feed bullshit. Real people, live voice, and Pulse tipping.</p>
+                  <div class="phone-actions">
+                    <span class="mini-btn hot">Launch</span>
+                    <span class="mini-btn">Voice rooms</span>
+                    <span class="mini-btn">Pulse</span>
+                  </div>
+                </div>
+
+                <div class="phone-feed">
+                  <div class="phone-card phone-row">
+                    <span class="phone-avatar"></span>
+                    <span class="phone-lines">
+                      <span class="phone-line"></span>
+                      <span class="phone-line short"></span>
+                    </span>
+                  </div>
+                  <div class="phone-card phone-row">
+                    <span class="phone-avatar"></span>
+                    <span class="phone-lines">
+                      <span class="phone-line"></span>
+                      <span class="phone-line short"></span>
+                    </span>
+                  </div>
+                  <div class="phone-card phone-row">
+                    <span class="phone-avatar"></span>
+                    <span class="phone-lines">
+                      <span class="phone-line"></span>
+                      <span class="phone-line short"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="sec-head reveal">
+        <span class="kicker" data-i18n="sec_kicker">What you get</span>
+        <h2 data-i18n-html="sec_h2">Built for humans, <em>only humans</em>.</h2>
+      </div>
+
+      <section class="grid" aria-label="Highlights">
+        <article class="card reveal">
+          <span class="idx">01</span>
+          <h3 data-i18n="card1_h3">World ID-gated network</h3>
+          <p data-i18n="card1_p">Every account is human-verified. No bot farms, no burner spam. Your feed is humans — full stop.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="idx">02</span>
+          <h3 data-i18n="card2_h3">Humanity Chat voice rooms</h3>
+          <p data-i18n="card2_p">Jump into live voice rooms with verified humans. Create rooms, join conversations, and keep it real.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="idx">03</span>
+          <h3 data-i18n="card3_h3">Pulse tipping in WLD</h3>
+          <p data-i18n="card3_p">Tip creators via World App. Deep-links on mobile, WalletConnect on desktop. Support what moves you.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="idx">04</span>
+          <h3 data-i18n="card4_h3">Privacy-first by design</h3>
+          <p data-i18n="card4_p">Hash Humanity does not collect your biometric data. World ID verification happens through World App.</p>
+        </article>
+      </section>
+
+      <section class="cta reveal" aria-label="Join">
+        <img src="hashhumanity-qr.png" alt="QR code to hashhumanity.world" />
+        <div class="txt">
+          <h2 data-i18n-html="cta_h2">Join in <em>10 seconds</em>.</h2>
+          <p data-i18n-html="cta_p">
+            Point your camera, open <strong>hashhumanity.world</strong>, and verify with World ID.
+            Then jump into the feed or enter <strong>Humanity Chat</strong> voice rooms.
+          </p>
+          <div class="fineprint" data-i18n="fineprint">
+            Hash Humanity does not store biometric data. Verification is handled by World ID via World App.
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>© <span id="y"></span> Hash Humanity</span>
+        <span class="tag" data-i18n="footer_tag">You are the proof, not the product.</span>
+      </footer>
+    </main>
+  </div>
+
+  <noscript>
+    <div style="padding:16px 26px; text-align:center; background:#050505; color:#fff; border-top:1px solid rgba(255,255,255,.12);">
+      Hash Humanity is a human-verified social network powered by World ID.
+      <a href="https://hashhumanity.world" style="color:#38e0ff; font-weight:800;">Launch Hash Humanity</a>
+    </div>
+  </noscript>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    /* ---------- Signature: proof-of-humanity particle field ---------- */
+    (function () {
+      const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) return;
+
+      const canvas = document.getElementById("humanity-field");
+      const ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
+      if (!ctx) return;
+      let w, h, dpr, nodes = [], mouse = { x: -9999, y: -9999 };
+
+      function size() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.clientWidth = window.innerWidth;
+        h = canvas.clientHeight = window.innerHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const target = Math.min(90, Math.floor((w * h) / 20000));
+        nodes = Array.from({ length: target }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.28,
+          vy: (Math.random() - 0.5) * 0.28,
+          r: Math.random() * 1.4 + 0.6,
+          verified: Math.random() < 0.14
+        }));
+      }
+
+      function step() {
+        ctx.clearRect(0, 0, w, h);
+
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          n.x += n.vx; n.y += n.vy;
+          if (n.x < 0 || n.x > w) n.vx *= -1;
+          if (n.y < 0 || n.y > h) n.vy *= -1;
+
+          const dxm = mouse.x - n.x, dym = mouse.y - n.y;
+          const dm = Math.hypot(dxm, dym);
+          if (dm > 0 && dm < 160) { n.x += (dxm / dm) * 0.35; n.y += (dym / dm) * 0.35; }
+        }
+
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const d = Math.hypot(dx, dy);
+            if (d < 128) {
+              const o = (1 - d / 128) * 0.16;
+              if (a.verified || b.verified) {
+                ctx.strokeStyle = "rgba(56,224,255," + (o * 1.6) + ")";
+              } else {
+                ctx.strokeStyle = "rgba(255,255,255," + o + ")";
+              }
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        for (const n of nodes) {
+          if (n.verified) {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r + 2.4, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(56,224,255,0.16)";
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(150,238,255,0.95)";
+            ctx.fill();
+          } else {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255,0.55)";
+            ctx.fill();
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      window.addEventListener("resize", size, { passive: true });
+      window.addEventListener("pointermove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+      window.addEventListener("pointerleave", () => { mouse.x = -9999; mouse.y = -9999; });
+      size();
+      requestAnimationFrame(step);
+    })();
+
+    /* ---------- Scroll reveals ---------- */
+    (function () {
+      const scrollRoot = document.getElementById("scrollArea");
+      const items = document.querySelectorAll(".reveal");
+      if (!("IntersectionObserver" in window)) {
+        items.forEach((el) => el.classList.add("in"));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const el = e.target;
+            const delay = el.parentElement && el.parentElement.classList.contains("grid")
+              ? Array.prototype.indexOf.call(el.parentElement.children, el) * 90
+              : 0;
+            setTimeout(() => el.classList.add("in"), delay);
+            io.unobserve(el);
+          }
+        });
+      }, { root: scrollRoot, threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+      items.forEach((el) => io.observe(el));
+    })();
+
+    /* ---------- Live member counter (Firebase RTDB) ---------- */
+    (function () {
+      const el = document.getElementById("memberNum");
+      const scrollRoot = document.getElementById("scrollArea");
+      const FALLBACK = 1230; // total members (offline fallback only)
+      const fmt = (n) => n.toLocaleString("en-US");
+
+      let current = 0, raf = null;
+      function animateTo(target, dur) {
+        if (raf) cancelAnimationFrame(raf);
+        const from = current, delta = target - from;
+        if (delta === 0) { el.textContent = fmt(target); return; }
+        const t0 = performance.now();
+        (function frame(t) {
+          const p = Math.min((t - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          current = Math.round(from + delta * eased);
+          el.textContent = fmt(current);
+          if (p < 1) raf = requestAnimationFrame(frame);
+          else { current = target; el.textContent = fmt(target); }
+        })(t0);
+      }
+
+      let db = null;
+      function initFirebase() {
+        if (typeof firebase === "undefined" || !firebase.initializeApp) return false;
+        try {
+          if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp({
+              apiKey: "AIzaSyBT7P7DAfV-I9ESe6f9Jdp5ioCyGIK0d9A",
+              authDomain: "hashhumanity-58b9a.firebaseapp.com",
+              databaseURL: "https://hashhumanity-58b9a-default-rtdb.firebaseio.com",
+              projectId: "hashhumanity-58b9a"
+            });
+          }
+          db = firebase.database();
+          return true;
+        } catch (e) { console.warn("Firebase init failed, using fallback count.", e); return false; }
+      }
+
+      let firstValue = true;
+      function subscribe() {
+        db.ref("stats/usersCount").on("value",
+          (snap) => {
+            const v = Number(snap.val());
+            const target = Number.isFinite(v) && v > 0 ? v : FALLBACK;
+            animateTo(target, firstValue ? 2200 : 700);
+            firstValue = false;
+          },
+          (err) => { console.warn("Counter read failed, using fallback.", err); animateTo(FALLBACK, 2200); }
+        );
+      }
+
+      function start() {
+        let tries = 0;
+        (function waitForSdk() {
+          if (initFirebase()) { subscribe(); return; }
+          if (++tries > 40) { animateTo(FALLBACK, 2200); return; }
+          setTimeout(waitForSdk, 100);
+        })();
+      }
+
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) { start(); io.disconnect(); }
+        }, { root: scrollRoot, threshold: 0.5 });
+        io.observe(el);
+      } else start();
+    })();
+
+    /* ---------- Audio ---------- */
+    (function () {
+      const a = document.getElementById("hh-audio");
+      const gate = document.getElementById("audioGate");
+      const startBtn = document.getElementById("audioStartBtn");
+      const toggle = document.getElementById("audioToggle");
+
+      const audioUrl = new URL("intro.m4a", document.baseURI).toString();
+      a.src = audioUrl;
+
+      const previewUrl = new URL("app-preview.png", document.baseURI).toString();
+      document.documentElement.style.setProperty("--appPreview", `url("${previewUrl}?v=10")`);
+
+      a.volume = 0.65; a.loop = false; a.muted = false; a.preload = "auto";
+      let hasPlayedThisView = false;
+
+      function t(key, fallback){ return (window.HH_ACTIVE_STRINGS && window.HH_ACTIVE_STRINGS[key]) || fallback; }
+      function showGate(msg) { gate.style.display = "flex"; toggle.style.display = "none"; startBtn.textContent = msg || t("audio_start","Turn on sound"); }
+      function hideGate() { gate.style.display = "none"; }
+      function showToggle() { toggle.style.display = "inline-flex"; toggle.textContent = a.paused ? t("audio_off","Sound: off") : t("audio_on","Sound: on"); }
+
+      async function tryAutoplayOnce() {
+        if (hasPlayedThisView) { showToggle(); return; }
+        try { hasPlayedThisView = true; await a.play(); hideGate(); showToggle(); }
+        catch { hasPlayedThisView = false; showGate(t("audio_start","Turn on sound")); }
+      }
+
+      async function playFromGestureOnce() {
+        if (hasPlayedThisView) { showToggle(); return; }
+        try { a.load(); hasPlayedThisView = true; await a.play(); hideGate(); showToggle(); }
+        catch (e) { console.error("Audio play failed:", e); hasPlayedThisView = false; showGate(t("audio_start","Turn on sound")); }
+      }
+
+      startBtn.addEventListener("click", playFromGestureOnce, { passive: true });
+      startBtn.addEventListener("touchstart", playFromGestureOnce, { passive: true });
+
+      toggle.addEventListener("click", async () => {
+        if (a.paused) { if (hasPlayedThisView) { showToggle(); return; } await playFromGestureOnce(); }
+        else { a.pause(); showToggle(); }
+      });
+
+      a.addEventListener("ended", showToggle);
+      a.addEventListener("error", () => {
+        console.warn("Optional intro audio failed to load:", audioUrl);
+        hideGate();
+        toggle.style.display = "none";
+      });
+
+      window.addEventListener("load", () => {
+        // Try once. If the browser blocks autoplay, the visitor gets a clean sound button.
+        // If intro.m4a is missing, the error handler hides audio controls instead of showing a broken warning.
+        setTimeout(tryAutoplayOnce, 80);
+      });
+    })();
+  </script>
+
+  <script src="i18n.js"></script>
+  <script>
+    if (window.HH_I18N) { window.HH_I18N.init("home"); }
+  </script>
+</body>
 </html>
