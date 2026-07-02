@@ -24,8 +24,8 @@
   <meta property="og:title" content="Hash Humanity — You are the proof, not the product." />
   <meta property="og:description" content="Human-verified social. No bots. No ads. Live voice rooms and Pulse tipping for real people." />
   <meta property="og:url" content="https://hashhumanity.promo/" />
-  <meta property="og:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-1" />
-  <meta property="og:image:secure_url" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-1" />
+  <meta property="og:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-2" />
+  <meta property="og:image:secure_url" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-2" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -35,7 +35,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Hash Humanity — Verified Humans Only" />
   <meta name="twitter:description" content="Human-verified social. No bots. No ads. Live voice rooms and Pulse tipping for real people." />
-  <meta name="twitter:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-1" />
+  <meta name="twitter:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg?v=20260702-2" />
   <meta name="twitter:image:alt" content="Hash Humanity — You are the proof, not the product." />
   <meta name="twitter:url" content="https://hashhumanity.promo/" />
 
@@ -326,117 +326,12 @@
     .screen::after{
       content:""; position:absolute; inset:0;
       background:linear-gradient(120deg, transparent 0 36%, rgba(255,255,255,.14) 42%, transparent 48%);
-      mix-blend-mode:screen; opacity:.35; pointer-events:none;
+      mix-blend-mode:screen; opacity:.12; pointer-events:none;
       animation:scan 6s ease-in-out infinite;
-      z-index:3;
+      z-index:2;
     }
-    .phone-ui{
-      position:absolute;
-      inset:34px 14px 14px;
-      z-index:1;
-      display:flex;
-      flex-direction:column;
-      gap:11px;
-      padding:20px 14px 14px;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(56,224,255,.22), transparent 32%),
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
-    }
-    .phone-bar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      color:rgba(255,255,255,.82);
-      font-family:var(--mono);
-      font-size:10px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .phone-pill{
-      border:1px solid rgba(56,224,255,.34);
-      color:#aef4ff;
-      border-radius:999px;
-      padding:5px 8px;
-      background:rgba(56,224,255,.10);
-      box-shadow:0 0 18px rgba(56,224,255,.12);
-    }
-    .phone-card{
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:18px;
-      background:rgba(0,0,0,.38);
-      padding:12px;
-      box-shadow:0 18px 45px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.08);
-      backdrop-filter:blur(14px);
-    }
-    .phone-card.hero-card{
-      padding:16px 13px;
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
-    }
-    .phone-title{
-      margin:0 0 6px;
-      font-size:18px;
-      line-height:1.05;
-      letter-spacing:-.04em;
-      font-weight:900;
-    }
-    .phone-copy{
-      margin:0;
-      color:rgba(255,255,255,.66);
-      font-size:11px;
-      line-height:1.35;
-    }
-    .phone-feed{
-      display:grid;
-      gap:9px;
-    }
-    .phone-row{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
-    .phone-avatar{
-      width:28px;
-      height:28px;
-      border-radius:999px;
-      flex:0 0 auto;
-      background:linear-gradient(135deg, #fff, #38e0ff);
-      box-shadow:0 0 22px rgba(56,224,255,.25);
-    }
-    .phone-lines{
-      flex:1;
-      min-width:0;
-      display:grid;
-      gap:5px;
-    }
-    .phone-line{
-      height:7px;
-      border-radius:999px;
-      background:rgba(255,255,255,.22);
-    }
-    .phone-line.short{ width:64%; }
-    .phone-actions{
-      margin-top:12px;
-      display:flex;
-      gap:7px;
-      flex-wrap:wrap;
-    }
-    .mini-btn{
-      border-radius:999px;
-      padding:6px 8px;
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.12);
-      color:rgba(255,255,255,.82);
-      font-family:var(--mono);
-      font-size:9px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-    .mini-btn.hot{
-      background:#fff;
-      color:#000;
-    }
+    /* The app screenshot is now shown cleanly inside the phone.
+       No fake UI layer sits on top of it. */
     @keyframes scan{ 0%,100%{ transform:translateX(-8%); } 50%{ transform:translateX(8%); } }
 
     .sec-head{ margin:70px 0 26px; }
@@ -650,48 +545,7 @@
 
         <div class="device-orbit reveal" aria-hidden="true">
           <div class="device">
-            <div class="screen">
-              <div class="phone-ui">
-                <div class="phone-bar">
-                  <span>Hash Humanity</span>
-                  <span class="phone-pill">World ID</span>
-                </div>
-
-                <div class="phone-card hero-card">
-                  <p class="phone-title">Verified humans only.</p>
-                  <p class="phone-copy">No bot swarms. No ad-feed bullshit. Real people, live voice, and Pulse tipping.</p>
-                  <div class="phone-actions">
-                    <span class="mini-btn hot">Launch</span>
-                    <span class="mini-btn">Voice rooms</span>
-                    <span class="mini-btn">Pulse</span>
-                  </div>
-                </div>
-
-                <div class="phone-feed">
-                  <div class="phone-card phone-row">
-                    <span class="phone-avatar"></span>
-                    <span class="phone-lines">
-                      <span class="phone-line"></span>
-                      <span class="phone-line short"></span>
-                    </span>
-                  </div>
-                  <div class="phone-card phone-row">
-                    <span class="phone-avatar"></span>
-                    <span class="phone-lines">
-                      <span class="phone-line"></span>
-                      <span class="phone-line short"></span>
-                    </span>
-                  </div>
-                  <div class="phone-card phone-row">
-                    <span class="phone-avatar"></span>
-                    <span class="phone-lines">
-                      <span class="phone-line"></span>
-                      <span class="phone-line short"></span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="screen" aria-label="Hash Humanity app preview"></div>
           </div>
         </div>
       </section>
@@ -954,7 +808,7 @@
       a.src = audioUrl;
 
       const previewUrl = new URL("app-preview.png", document.baseURI).toString();
-      document.documentElement.style.setProperty("--appPreview", `url("${previewUrl}?v=10")`);
+      document.documentElement.style.setProperty("--appPreview", `url("${previewUrl}?v=11")`);
 
       a.volume = 0.65; a.loop = false; a.muted = false; a.preload = "auto";
       let hasPlayedThisView = false;
