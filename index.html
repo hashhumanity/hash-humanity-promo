@@ -8,6 +8,30 @@
   <title>Hash Humanity — You are the proof, not the product.</title>
   <meta name="description" content="A human-verified social network powered by World ID. No bots. No spam. Humanity Chat voice rooms + Pulse tipping built-in." />
 
+  <!-- ══════════════════════════════════════════════════════
+       Link previews (Open Graph) — this is what SMS/RCS,
+       WhatsApp, Facebook, Discord, Slack, iMessage etc. read
+       when someone shares this page. og:image MUST be an
+       absolute public URL, 1200x630.
+       ══════════════════════════════════════════════════════ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hash Humanity" />
+  <meta property="og:title" content="Hash Humanity — You are the proof, not the product." />
+  <meta property="og:description" content="A human-verified social network powered by World ID. No bots. No ads. Live voice rooms and Pulse tipping built in." />
+  <meta property="og:url" content="https://hashhumanity.promo/" />
+  <meta property="og:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg" />
+  <meta property="og:image:secure_url" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Hash Humanity — verified humans only" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hash Humanity — You are the proof, not the product." />
+  <meta name="twitter:description" content="A human-verified social network powered by World ID. No bots. No ads. Live voice rooms and Pulse tipping built in." />
+  <meta name="twitter:image" content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg" />
+
   <link rel="icon" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -685,7 +709,7 @@
     (function () {
       const el = document.getElementById("memberNum");
       const scrollRoot = document.getElementById("scrollArea");
-      const FALLBACK = 1222; // total members (offline fallback only)
+      const FALLBACK = 1230; // total members (offline fallback only)
       const fmt = (n) => n.toLocaleString("en-US");
 
       let current = 0, raf = null;
