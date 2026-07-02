@@ -519,3 +519,175 @@ body{
   color: #ffffff !important;
   border-color: rgba(0,0,0,.12) !important;
 }
+/* =========================================================
+   HASH HUMANITY — FINAL MOBILE HEADER OVERRIDE
+   Paste this at the VERY END of your CSS, after FORCE LIGHT MODE.
+   It wins over the older sticky/flex-end rules.
+   ========================================================= */
+
+@media (max-width: 780px){
+  :root{
+    /* Fixed height avoids JS/layout jumps that make the header look like it is moving. */
+    --hh-mobile-header-h: 116px;
+  }
+
+  html{
+    scroll-padding-top: calc(var(--hh-mobile-header-h) + 12px) !important;
+  }
+
+  body{
+    padding-top: calc(var(--hh-mobile-header-h) + env(safe-area-inset-top, 0px)) !important;
+    overflow-x: hidden !important;
+  }
+
+  /* True pinned glass header. Not sticky. Not animated. Not transform-based. */
+  header{
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    z-index: 2147483000 !important;
+
+    display: block !important;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 0 10px !important;
+    margin: 0 !important;
+
+    /* frosted glass, not black slab */
+    background: rgba(255,255,255,.58) !important;
+    border-bottom: 1px solid rgba(10,10,12,.12) !important;
+    box-shadow: 0 12px 34px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.45) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(180%) !important;
+    backdrop-filter: blur(22px) saturate(180%) !important;
+
+    transform: none !important;
+    animation: none !important;
+    contain: none !important;
+    will-change: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Dark-page fallback: if this page is still dark, keep the glass dark/transparent. */
+  @media (prefers-color-scheme: dark){
+    header{
+      background: rgba(0,0,0,.38) !important;
+      border-bottom-color: rgba(255,255,255,.12) !important;
+      box-shadow: 0 14px 36px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.14) !important;
+    }
+  }
+
+  /* Center the logo/title row and the subnav row against the actual viewport. */
+  header .wrap,
+  header .wrap.header-inner{
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  header .brand{
+    width: max-content !important;
+    max-width: calc(100vw - 24px) !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+
+  header .brand img{
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 13px !important;
+    flex: 0 0 auto !important;
+  }
+
+  header .brand span,
+  header .brand strong{
+    font-size: clamp(16px, 5.6vw, 23px) !important;
+    letter-spacing: .09em !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: calc(100vw - 92px) !important;
+  }
+
+  header .actions{
+    width: max-content !important;
+    max-width: calc(100vw - 24px) !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  header .btn{
+    min-width: 0 !important;
+    padding: 9px 12px !important;
+    font-size: 10.5px !important;
+    letter-spacing: .08em !important;
+    white-space: nowrap !important;
+  }
+
+  header .lang-switch{
+    display: inline-flex !important;
+    justify-content: center !important;
+  }
+
+  header .lang-menu{
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 2147483001 !important;
+  }
+
+  main,
+  main.wrap{
+    padding-top: 24px !important;
+  }
+
+  /* Subtle mobile-only motion. The HEADER does not move; only the background glow does. */
+  body::after{
+    content: "";
+    position: fixed;
+    inset: -18%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: .18;
+    background:
+      radial-gradient(circle at 20% 12%, rgba(56,224,255,.36), transparent 34%),
+      radial-gradient(circle at 82% 26%, rgba(255,255,255,.28), transparent 30%),
+      radial-gradient(circle at 50% 92%, rgba(0,0,0,.10), transparent 42%);
+    animation: hhMobileAuraDrift 16s ease-in-out infinite alternate;
+  }
+}
+
+@media (max-width: 420px){
+  :root{ --hh-mobile-header-h: 110px; }
+  header .brand img{ width: 40px !important; height: 40px !important; }
+  header .actions{ gap: 7px !important; }
+  header .btn{ padding: 8px 10px !important; font-size: 10px !important; }
+}
+
+@keyframes hhMobileAuraDrift{
+  from{ transform: translate3d(-2%, -1%, 0) scale(1); }
+  to{ transform: translate3d(2%, 1%, 0) scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  body::after{ animation: none !important; }
+}
