@@ -1,5 +1,4 @@
-
 User-agent: *
 Allow: /
 
-Sitemap: https://marilyn2015.github.io/hash-humanity-landing/sitemap.xml
+Sitemap: https://hashhumanity.promo/sitemap.xml
