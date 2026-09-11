@@ -12,15 +12,33 @@
        PRIMARY SEO
   ========================================================== -->
 
-  <title>Human Verified Social Media Without Bots | Hash Humanity</title>
+  <title>Human Verified Social Media | One Human, One Account | Hash Humanity</title>
 
   <meta
     name="description"
-    content="Hash Humanity is human verified social media built for real people. One human, one account. HumanKey helps resist bots, fake accounts, duplicate identities and automated manipulation without engagement algorithms controlling what you see."
+    content="Hash Humanity is human verified social media built around one human, one account. HumanKey combines proof of personhood, privacy-preserving zero-knowledge proof technology, passkeys and duplicate detection to resist bots, fake accounts and automated manipulation."
   >
 
   <meta
+    name="keywords"
+    content="human verified social media, human verified social network, zero knowledge proof social media, zero-knowledge proof, one human one account, one account one human, proof of personhood, proof of humanity, bot resistant social media, social media without bots, no algorithm social media, privacy preserving social media, HumanKey, Hash Humanity"
+  >
+
+  <meta name="application-name" content="Hash Humanity">
+  <meta name="author" content="Hash Humanity">
+
+  <meta
     name="robots"
+    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+  >
+
+  <meta
+    name="googlebot"
+    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+  >
+
+  <meta
+    name="bingbot"
     content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
   >
 
@@ -49,27 +67,21 @@
   >
 
   <!-- =========================================================
-       OPEN GRAPH
+       OPEN GRAPH / SOCIAL SHARING
   ========================================================== -->
 
-  <meta
-    property="og:type"
-    content="website"
-  >
-
-  <meta
-    property="og:site_name"
-    content="Hash Humanity"
-  >
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Hash Humanity">
 
   <meta
     property="og:title"
-    content="Hash Humanity | Human Verified Social Media"
+    content="Human Verified Social Media | One Human, One Account | Hash Humanity"
   >
 
   <meta
     property="og:description"
-    content="Human verified social media built around real people. One human. One account. Designed to resist bots, fake accounts and algorithmic manipulation."
+    content="Human verified social media powered by HumanKey. One human, one account, proof of personhood, privacy-preserving zero-knowledge proofs and stronger resistance to bots, fake accounts and automated manipulation."
   >
 
   <meta
@@ -82,43 +94,39 @@
     content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg.png"
   >
 
-  <meta
-    property="og:image:width"
-    content="1200"
-  >
-
-  <meta
-    property="og:image:height"
-    content="630"
-  >
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
   <meta
     property="og:image:alt"
-    content="Hash Humanity human verified social media"
+    content="Hash Humanity human verified social media — one human, one account"
   >
 
   <!-- =========================================================
        TWITTER / X
   ========================================================== -->
 
-  <meta
-    name="twitter:card"
-    content="summary_large_image"
-  >
+  <meta name="twitter:card" content="summary_large_image">
 
   <meta
     name="twitter:title"
-    content="Hash Humanity | Human Verified Social Media"
+    content="Human Verified Social Media | One Human, One Account | Hash Humanity"
   >
 
   <meta
     name="twitter:description"
-    content="One human. One account. Human verified social media designed to resist bots, fake accounts and algorithmic manipulation."
+    content="Hash Humanity uses HumanKey proof of personhood and privacy-preserving zero-knowledge proofs to support one human, one account and resist bots, fake accounts and automated manipulation."
   >
 
   <meta
     name="twitter:image"
     content="https://hashhumanity.promo/og-card-globe-dark-1200x630.jpg.png"
+  >
+
+  <meta
+    name="twitter:image:alt"
+    content="Hash Humanity human verified social media"
   >
 
   <!-- =========================================================
@@ -128,55 +136,125 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Hash Humanity",
-    "alternateName": [
-      "Hash Humanity Social Network",
-      "Human Verified Social Media"
-    ],
-    "url": "https://hashhumanity.promo/",
-    "description": "Hash Humanity is human verified social media built around one human, one account. HumanKey provides privacy-preserving human verification designed to make bots, duplicate accounts, fake profiles and automated manipulation substantially harder to scale.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Hash Humanity",
-      "url": "https://hashhumanity.world/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://hashhumanity.promo/logo.png"
-      }
-    },
-    "about": [
+    "@graph": [
       {
-        "@type": "Thing",
-        "name": "Human verified social media"
+        "@type": "Organization",
+        "@id": "https://hashhumanity.promo/#organization",
+        "name": "Hash Humanity",
+        "url": "https://hashhumanity.world/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://hashhumanity.promo/logo.png"
+        },
+        "description": "Hash Humanity is a human verified social media platform built around one human, one account and privacy-preserving proof of personhood."
       },
       {
-        "@type": "Thing",
-        "name": "Human verification"
+        "@type": "WebSite",
+        "@id": "https://hashhumanity.promo/#website",
+        "url": "https://hashhumanity.promo/",
+        "name": "Hash Humanity",
+        "alternateName": [
+          "Hash Humanity Social Network",
+          "Human Verified Social Media",
+          "One Human One Account Social Media"
+        ],
+        "publisher": {
+          "@id": "https://hashhumanity.promo/#organization"
+        },
+        "description": "Human verified social media for real people. One human, one account, proof of personhood, privacy-preserving zero-knowledge proofs and stronger resistance to bots and duplicate accounts."
       },
       {
-        "@type": "Thing",
-        "name": "Proof of personhood"
+        "@type": "WebPage",
+        "@id": "https://hashhumanity.promo/#webpage",
+        "url": "https://hashhumanity.promo/",
+        "name": "Human Verified Social Media | One Human, One Account | Hash Humanity",
+        "isPartOf": {
+          "@id": "https://hashhumanity.promo/#website"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Human verified social media"
+          },
+          {
+            "@type": "Thing",
+            "name": "Human verified social network"
+          },
+          {
+            "@type": "Thing",
+            "name": "One human one account"
+          },
+          {
+            "@type": "Thing",
+            "name": "Zero knowledge proof"
+          },
+          {
+            "@type": "Thing",
+            "name": "Zero-knowledge proofs"
+          },
+          {
+            "@type": "Thing",
+            "name": "Proof of personhood"
+          },
+          {
+            "@type": "Thing",
+            "name": "Proof of humanity"
+          },
+          {
+            "@type": "Thing",
+            "name": "Bot resistant social media"
+          },
+          {
+            "@type": "Thing",
+            "name": "Social media without bots"
+          },
+          {
+            "@type": "Thing",
+            "name": "Privacy preserving verification"
+          },
+          {
+            "@type": "Thing",
+            "name": "Social media without manipulative algorithms"
+          }
+        ],
+        "keywords": [
+          "human verified social media",
+          "human verified social network",
+          "zero knowledge proof social media",
+          "one human one account",
+          "one account one human",
+          "proof of personhood",
+          "proof of humanity",
+          "bot resistant social media",
+          "social media without bots",
+          "no algorithm social media",
+          "privacy preserving social media",
+          "HumanKey",
+          "Hash Humanity"
+        ],
+        "description": "Hash Humanity is human verified social media built around one human, one account. HumanKey uses proof-of-personhood methods, privacy-preserving zero-knowledge proof technology, passkeys and duplicate detection to make bots, fake accounts and account farms harder to scale."
       },
       {
-        "@type": "Thing",
-        "name": "One human one account"
-      },
-      {
-        "@type": "Thing",
-        "name": "Zero-knowledge proofs"
-      },
-      {
-        "@type": "Thing",
-        "name": "Bot resistant social media"
-      },
-      {
-        "@type": "Thing",
-        "name": "Privacy preserving verification"
-      },
-      {
-        "@type": "Thing",
-        "name": "Social media without manipulative algorithms"
+        "@type": "SoftwareApplication",
+        "@id": "https://hashhumanity.promo/#app",
+        "name": "Hash Humanity",
+        "applicationCategory": "SocialNetworkingApplication",
+        "operatingSystem": "Web",
+        "url": "https://hashhumanity.world/",
+        "publisher": {
+          "@id": "https://hashhumanity.promo/#organization"
+        },
+        "description": "A human verified social media platform designed around one human, one account, HumanKey proof of personhood, privacy-preserving zero-knowledge proofs, passkey authentication and resistance to bots and duplicate accounts.",
+        "featureList": [
+          "Human verified social media",
+          "One human one account",
+          "Proof of personhood",
+          "Privacy-preserving zero-knowledge proofs",
+          "Passkey authentication",
+          "Duplicate account resistance",
+          "Bot resistant social networking",
+          "No manipulative engagement algorithm"
+        ]
       }
     ]
   }
@@ -1504,8 +1582,10 @@
 
         <p class="lead">
           Hash Humanity is human verified social media built around
-          real people. HumanKey helps make bot networks, duplicate
-          identities, fake accounts and artificial engagement
+          one human, one account. HumanKey combines proof of
+          personhood, privacy-preserving zero knowledge proof
+          technology, passkeys and duplicate detection to make bot
+          networks, fake accounts and artificial engagement
           dramatically harder to scale.
         </p>
 
@@ -1596,14 +1676,15 @@
           </div>
 
           <h2 class="section-title">
-            Social media built for humans, not bots.
+            Human verified social media. One human. One account.
           </h2>
 
           <p class="section-text">
             Hash Humanity is a human verified social network
-            designed around one human, one account. HumanKey
-            provides privacy-preserving human verification that
-            makes bot networks, duplicate accounts, fake profiles
+            designed around one human, one account. HumanKey adds
+            proof of personhood, privacy-preserving zero knowledge
+            proof technology, passkeys and duplicate detection to
+            make bot networks, duplicate accounts, fake profiles
             and large-scale account farming substantially harder
             to operate.
           </p>
@@ -1829,16 +1910,17 @@
           </div>
 
           <h2 class="section-title">
-            Prove you are human without making your identity the
-            product.
+            Zero-knowledge proof of personhood for one human,
+            one account.
           </h2>
 
           <p class="section-text">
             HumanKey is Hash Humanity's proof-of-personhood
-            protocol. It combines human verification, duplicate
-            detection, privacy-preserving cryptography,
-            zero-knowledge proof concepts and passkey
-            authentication to support one human, one account.
+            protocol for human verified social media. It combines
+            human verification, duplicate detection,
+            privacy-preserving cryptography, zero-knowledge proof
+            technology and passkey authentication to support one
+            human, one account.
           </p>
 
           <p class="section-text">
@@ -1878,9 +1960,11 @@
         </h2>
 
         <p class="section-text">
-          Real people. Real conversations. Human verification.
-          One human, one account. A social network designed to make
-          bots and manufactured engagement harder to scale.
+          Real people. Real conversations. Human verified social
+          media. One human, one account. Privacy-preserving
+          zero-knowledge proof of personhood. A social network
+          designed to make bots and manufactured engagement harder
+          to scale.
         </p>
 
         <div class="final-actions">
