@@ -2,21 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
-
-  <!-- =========================================================
-       PRIMARY SEO
-  ========================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>Human Verified Social Media | One Human, One Account | Hash Humanity</title>
 
   <meta
     name="description"
-    content="Hash Humanity is human verified social media built around one human, one account. HumanKey combines proof of personhood, privacy-preserving zero-knowledge proof technology, passkeys and duplicate detection to resist bots, fake accounts and automated manipulation."
+    content="Hash Humanity is human verified social media built around one human, one account. HumanKey combines human verification, duplicate detection, privacy-preserving zero-knowledge proofs and passkeys to resist bots, fake accounts and automated manipulation."
   >
 
   <meta
@@ -44,10 +36,7 @@
 
   <meta name="theme-color" content="#000000">
 
-  <link
-    rel="canonical"
-    href="https://hashhumanity.promo/"
-  >
+  <link rel="canonical" href="https://hashhumanity.promo/">
 
   <link
     rel="sitemap"
@@ -55,20 +44,10 @@
     href="https://hashhumanity.promo/sitemap.xml"
   >
 
-  <!-- =========================================================
-       ICONS
-  ========================================================== -->
-
   <link rel="icon" href="./logo.png">
+  <link rel="apple-touch-icon" href="./logo.png">
 
-  <link
-    rel="apple-touch-icon"
-    href="./logo.png"
-  >
-
-  <!-- =========================================================
-       OPEN GRAPH / SOCIAL SHARING
-  ========================================================== -->
+  <!-- OPEN GRAPH -->
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en_US">
@@ -81,7 +60,7 @@
 
   <meta
     property="og:description"
-    content="Human verified social media powered by HumanKey. One human, one account, proof of personhood, privacy-preserving zero-knowledge proofs and stronger resistance to bots, fake accounts and automated manipulation."
+    content="A human-first social network protected by HumanKey. One human, one account, private proof and stronger resistance to bots, fake accounts and automated manipulation."
   >
 
   <meta
@@ -103,9 +82,7 @@
     content="Hash Humanity human verified social media — one human, one account"
   >
 
-  <!-- =========================================================
-       TWITTER / X
-  ========================================================== -->
+  <!-- TWITTER / X -->
 
   <meta name="twitter:card" content="summary_large_image">
 
@@ -116,7 +93,7 @@
 
   <meta
     name="twitter:description"
-    content="Hash Humanity uses HumanKey proof of personhood and privacy-preserving zero-knowledge proofs to support one human, one account and resist bots, fake accounts and automated manipulation."
+    content="A human-first social network protected by HumanKey. Real people, private proof and stronger resistance to bots and duplicate accounts."
   >
 
   <meta
@@ -129,9 +106,7 @@
     content="Hash Humanity human verified social media"
   >
 
-  <!-- =========================================================
-       STRUCTURED DATA
-  ========================================================== -->
+  <!-- STRUCTURED DATA -->
 
   <script type="application/ld+json">
   {
@@ -161,7 +136,7 @@
         "publisher": {
           "@id": "https://hashhumanity.promo/#organization"
         },
-        "description": "Human verified social media for real people. One human, one account, proof of personhood, privacy-preserving zero-knowledge proofs and stronger resistance to bots and duplicate accounts."
+        "description": "Human verified social media for real people, built around unique human participation and privacy-preserving verification."
       },
       {
         "@type": "WebPage",
@@ -178,15 +153,7 @@
           },
           {
             "@type": "Thing",
-            "name": "Human verified social network"
-          },
-          {
-            "@type": "Thing",
             "name": "One human one account"
-          },
-          {
-            "@type": "Thing",
-            "name": "Zero knowledge proof"
           },
           {
             "@type": "Thing",
@@ -198,23 +165,11 @@
           },
           {
             "@type": "Thing",
-            "name": "Proof of humanity"
-          },
-          {
-            "@type": "Thing",
             "name": "Bot resistant social media"
           },
           {
             "@type": "Thing",
-            "name": "Social media without bots"
-          },
-          {
-            "@type": "Thing",
             "name": "Privacy preserving verification"
-          },
-          {
-            "@type": "Thing",
-            "name": "Social media without manipulative algorithms"
           }
         ],
         "keywords": [
@@ -222,7 +177,6 @@
           "human verified social network",
           "zero knowledge proof social media",
           "one human one account",
-          "one account one human",
           "proof of personhood",
           "proof of humanity",
           "bot resistant social media",
@@ -232,7 +186,7 @@
           "HumanKey",
           "Hash Humanity"
         ],
-        "description": "Hash Humanity is human verified social media built around one human, one account. HumanKey uses proof-of-personhood methods, privacy-preserving zero-knowledge proof technology, passkeys and duplicate detection to make bots, fake accounts and account farms harder to scale."
+        "description": "Hash Humanity is human verified social media built around one human, one account. HumanKey combines human verification, duplicate detection, privacy-preserving zero-knowledge proofs and passkeys."
       },
       {
         "@type": "SoftwareApplication",
@@ -244,11 +198,11 @@
         "publisher": {
           "@id": "https://hashhumanity.promo/#organization"
         },
-        "description": "A human verified social media platform designed around one human, one account, HumanKey proof of personhood, privacy-preserving zero-knowledge proofs, passkey authentication and resistance to bots and duplicate accounts.",
+        "description": "A human verified social media platform designed around unique human participation, private proof, passkey authentication and resistance to bots and duplicate accounts.",
         "featureList": [
           "Human verified social media",
           "One human one account",
-          "Proof of personhood",
+          "HumanKey proof of personhood",
           "Privacy-preserving zero-knowledge proofs",
           "Passkey authentication",
           "Duplicate account resistance",
@@ -263,9 +217,12 @@
   <style>
     :root {
       --bg: #000;
+      --panel: #070708;
       --text: #f5f5f7;
       --muted: #98989d;
+      --soft: #747479;
       --line: rgba(255,255,255,.09);
+      --line-strong: rgba(255,255,255,.16);
       --max: 1180px;
     }
 
@@ -318,6 +275,12 @@
     img {
       display: block;
       max-width: 100%;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
     }
 
     .wrap {
@@ -374,14 +337,6 @@
       height: 30px;
 
       object-fit: contain;
-
-      background: transparent;
-
-      border: 0;
-      border-radius: 0;
-
-      filter: none;
-      box-shadow: none;
     }
 
     .header-actions {
@@ -400,6 +355,16 @@
       font-weight: 550;
     }
 
+    .header-link:hover,
+    .footer-links a:hover,
+    .text-link:hover {
+      color: #fff;
+    }
+
+    .lang-switch {
+      position: relative;
+    }
+
     .lang-btn {
       border: 0;
 
@@ -413,10 +378,6 @@
       font-weight: 650;
 
       cursor: pointer;
-    }
-
-    .lang-switch {
-      position: relative;
     }
 
     .lang-menu {
@@ -438,6 +399,9 @@
 
       border: 1px solid var(--line);
       border-radius: 9px;
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.5);
 
       z-index: 1200;
     }
@@ -468,23 +432,36 @@
     }
 
     .lang-menu button:hover {
-      background: rgba(255,255,255,.07);
+      background:
+        rgba(255,255,255,.07);
+    }
+
+    .join-btn,
+    .enter-btn,
+    .primary-btn,
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 7px;
+
+      font-weight: 650;
+
+      transition:
+        background .18s ease,
+        border-color .18s ease,
+        opacity .18s ease,
+        transform .18s ease;
     }
 
     .join-btn,
     .enter-btn {
       min-height: 35px;
 
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
       padding: 0 14px;
 
-      border-radius: 7px;
-
       font-size: 12px;
-      font-weight: 650;
     }
 
     .join-btn {
@@ -510,7 +487,8 @@
       color: #000;
     }
 
-    .enter-btn:hover {
+    .enter-btn:hover,
+    .primary-btn:hover {
       opacity: .9;
     }
 
@@ -600,7 +578,7 @@
     }
 
     .lead {
-      max-width: 620px;
+      max-width: 600px;
 
       margin: 27px 0 0;
 
@@ -627,16 +605,9 @@
     .secondary-btn {
       min-height: 48px;
 
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
       padding: 0 18px;
 
-      border-radius: 7px;
-
       font-size: 13px;
-      font-weight: 650;
     }
 
     .primary-btn {
@@ -654,6 +625,14 @@
 
       border:
         1px solid rgba(255,255,255,.15);
+    }
+
+    .secondary-btn:hover {
+      background:
+        rgba(255,255,255,.075);
+
+      border-color:
+        rgba(255,255,255,.24);
     }
 
     /* =========================================================
@@ -830,62 +809,6 @@
       object-position: top center;
     }
 
-    .phone-brand-fix {
-      position: absolute;
-
-      top: 4.7%;
-      left: 50%;
-
-      width: 72%;
-      height: 7.2%;
-
-      transform: translateX(-50%);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 5px;
-
-      padding: 2px 7px;
-
-      background: #000;
-
-      z-index: 6;
-
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
-    .phone-screen .phone-brand-fix-logo {
-      width: 18px;
-      height: 18px;
-
-      flex: 0 0 18px;
-
-      object-fit: contain;
-      object-position: center;
-
-      background: transparent;
-
-      filter: none;
-    }
-
-    .phone-brand-fix-name {
-      color: #fff;
-
-      font-size:
-        clamp(7px, .7vw, 10px);
-
-      font-weight: 650;
-
-      line-height: 1;
-
-      letter-spacing: .16em;
-
-      text-transform: uppercase;
-    }
-
     /* =========================================================
        GENERAL SECTIONS
     ========================================================== */
@@ -893,7 +816,7 @@
     .section-label {
       margin-bottom: 17px;
 
-      color: #747479;
+      color: var(--soft);
 
       font-size: 10px;
       font-weight: 700;
@@ -930,16 +853,22 @@
       line-height: 1.58;
     }
 
+    .human-social,
+    .principles,
+    .statement,
+    .humankey-section,
+    .final-section {
+      border-top:
+        1px solid var(--line);
+    }
+
     /* =========================================================
-       SEO / HUMAN VERIFIED SECTION
+       HUMAN SOCIAL
     ========================================================== */
 
     .human-social {
       padding:
         100px 0 105px;
-
-      border-top:
-        1px solid var(--line);
     }
 
     .human-social-grid {
@@ -961,12 +890,21 @@
 
       background:
         var(--line);
+
+      border:
+        1px solid rgba(255,255,255,.025);
     }
 
     .seo-point {
       padding: 22px 24px;
 
-      background: #000;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.018),
+          rgba(255,255,255,.006)
+        ),
+        #000;
     }
 
     .seo-point strong {
@@ -997,9 +935,6 @@
     .principles {
       padding:
         92px 0 100px;
-
-      border-top:
-        1px solid var(--line);
     }
 
     .principle-grid {
@@ -1021,7 +956,13 @@
 
       padding: 25px;
 
-      background: #000;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.015),
+          transparent 55%
+        ),
+        #000;
     }
 
     .principle-number {
@@ -1059,9 +1000,31 @@
     .statement {
       padding:
         102px 0 110px;
+    }
 
-      border-top:
-        1px solid var(--line);
+    .statement .wrap {
+      position: relative;
+    }
+
+    .statement .wrap::after {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      right: 0;
+
+      width: 34%;
+      height: 100%;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(255,255,255,.045),
+          transparent 65%
+        );
+
+      pointer-events: none;
     }
 
     /* =========================================================
@@ -1071,9 +1034,6 @@
     .humankey-section {
       padding:
         100px 0;
-
-      border-top:
-        1px solid var(--line);
     }
 
     .humankey-grid {
@@ -1084,12 +1044,14 @@
 
       gap: 70px;
 
-      align-items: start;
+      align-items: center;
     }
 
     .hk-mark {
-      width: 180px;
-      height: 180px;
+      position: relative;
+
+      width: 190px;
+      height: 190px;
 
       display: grid;
       place-items: center;
@@ -1106,6 +1068,29 @@
           rgba(255,255,255,.015) 62%,
           transparent 70%
         );
+
+      box-shadow:
+        0 0 70px rgba(255,255,255,.025);
+    }
+
+    .hk-mark::before,
+    .hk-mark::after {
+      content: "";
+
+      position: absolute;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(255,255,255,.055);
+    }
+
+    .hk-mark::before {
+      inset: -22px;
+    }
+
+    .hk-mark::after {
+      inset: 32px;
     }
 
     .hk-mark img {
@@ -1114,7 +1099,7 @@
 
       object-fit: contain;
 
-      filter: none;
+      z-index: 2;
     }
 
     .text-link {
@@ -1124,6 +1109,8 @@
 
       font-size: 13px;
       font-weight: 620;
+
+      color: #d8d8dc;
     }
 
     /* =========================================================
@@ -1134,10 +1121,14 @@
       padding:
         92px 0 100px;
 
-      border-top:
-        1px solid var(--line);
-
       text-align: center;
+
+      background:
+        radial-gradient(
+          circle at 50% 55%,
+          rgba(255,255,255,.035),
+          transparent 30%
+        );
     }
 
     .final-section .section-title {
@@ -1199,8 +1190,6 @@
       height: 22px;
 
       object-fit: contain;
-
-      filter: none;
     }
 
     .footer-links {
@@ -1209,6 +1198,34 @@
       gap: 16px;
 
       flex-wrap: wrap;
+    }
+
+    /* =========================================================
+       TABLET
+    ========================================================== */
+
+    @media (max-width: 980px) and (min-width: 821px) {
+
+      .hero {
+        grid-template-columns:
+          minmax(0, 1fr)
+          minmax(360px, .82fr);
+
+        gap: 30px;
+      }
+
+      .hero h1 {
+        font-size:
+          clamp(68px, 8vw, 88px);
+      }
+
+      .human-social-grid {
+        gap: 50px;
+      }
+
+      .principle {
+        padding: 22px;
+      }
     }
 
     /* =========================================================
@@ -1339,6 +1356,10 @@
         margin-right: auto;
       }
 
+      .statement .wrap::after {
+        display: none;
+      }
+
       .footer-inner {
         justify-content: center;
 
@@ -1376,6 +1397,17 @@
       .primary-btn,
       .secondary-btn {
         width: 100%;
+      }
+
+      .section-title {
+        font-size:
+          clamp(38px, 11vw, 52px);
+
+        line-height: 1;
+      }
+
+      .section-text {
+        font-size: 16px;
       }
     }
 
@@ -1465,6 +1497,7 @@
             type="button"
             aria-expanded="false"
             aria-controls="langMenu"
+            aria-label="Select language"
           >
             <span id="langBtnLabel">
               EN
@@ -1475,6 +1508,7 @@
             class="lang-menu"
             id="langMenu"
           >
+
             <li>
               <button type="button" data-lang="en">
                 English
@@ -1522,6 +1556,7 @@
                 한국어
               </button>
             </li>
+
           </ul>
 
         </div>
@@ -1559,7 +1594,9 @@
 
   <main>
 
-    <!-- HERO -->
+    <!-- =======================================================
+         HERO
+    ======================================================== -->
 
     <section class="hero wrap">
 
@@ -1581,12 +1618,10 @@
         </h1>
 
         <p class="lead">
-          Hash Humanity is human verified social media built around
-          one human, one account. HumanKey combines proof of
-          personhood, privacy-preserving zero knowledge proof
-          technology, passkeys and duplicate detection to make bot
-          networks, fake accounts and artificial engagement
-          dramatically harder to scale.
+          A human-first social network built around one human,
+          one account. HumanKey verifies that a real, unique person
+          is behind the account while keeping public identity
+          separate from real-world identity.
         </p>
 
         <div class="hero-actions">
@@ -1637,20 +1672,6 @@
                 alt=""
               >
 
-              <div class="phone-brand-fix">
-
-                <img
-                  class="phone-brand-fix-logo"
-                  src="./logo.png"
-                  alt=""
-                >
-
-                <span class="phone-brand-fix-name">
-                  Hash Humanity
-                </span>
-
-              </div>
-
             </div>
 
           </div>
@@ -1662,7 +1683,7 @@
     </section>
 
     <!-- =======================================================
-         HUMAN VERIFIED SOCIAL MEDIA SEO SECTION
+         THE PROBLEM
     ======================================================== -->
 
     <section class="human-social">
@@ -1672,35 +1693,26 @@
         <div>
 
           <div class="section-label">
-            HUMAN VERIFIED SOCIAL MEDIA
+            A DIFFERENT KIND OF SOCIAL NETWORK
           </div>
 
           <h2 class="section-title">
-            Human verified social media. One human. One account.
+            The conversation starts with knowing there is a person
+            behind it.
           </h2>
 
           <p class="section-text">
-            Hash Humanity is a human verified social network
-            designed around one human, one account. HumanKey adds
-            proof of personhood, privacy-preserving zero knowledge
-            proof technology, passkeys and duplicate detection to
-            make bot networks, duplicate accounts, fake profiles
-            and large-scale account farming substantially harder
-            to operate.
+            Bots, duplicate accounts and account farms can distort
+            what looks popular, what looks credible and even what
+            looks like public consensus. Hash Humanity addresses
+            that problem before an account enters the conversation.
           </p>
 
           <p class="section-text">
-            The goal is simple: create social media where human
-            participation matters more than manufactured
-            engagement.
-          </p>
-
-          <p class="section-text">
-            Hash Humanity is not designed around an engagement
-            algorithm engineered to amplify outrage, rage bait or
-            artificial popularity simply to keep people scrolling.
-            Conversations should be shaped by people, not by an
-            automated system deciding what deserves your attention.
+            HumanKey establishes unique human participation, then
+            Hash Humanity gets out of the way. No system deciding
+            that outrage deserves more of your attention simply
+            because it keeps you scrolling.
           </p>
 
         </div>
@@ -1708,36 +1720,55 @@
         <div class="seo-points">
 
           <div class="seo-point">
-            <strong>Human verified</strong>
+
+            <strong>
+              Human verified
+            </strong>
+
             <span>
-              Accounts are built around proof that a unique human
-              is participating.
+              A real person must establish eligibility before
+              becoming part of the network.
             </span>
+
           </div>
 
           <div class="seo-point">
-            <strong>One human. One account.</strong>
+
+            <strong>
+              Duplicate resistant
+            </strong>
+
             <span>
-              HumanKey is designed to make duplicate identities and
-              large account farms substantially harder to create.
+              HumanKey checks for prior enrollment to make
+              large-scale account farming harder.
             </span>
+
           </div>
 
           <div class="seo-point">
-            <strong>Bot resistant</strong>
+
+            <strong>
+              Private proof
+            </strong>
+
             <span>
-              Human verification raises the cost and difficulty of
-              operating automated bot networks at scale.
+              Verification does not require turning your real-world
+              identity into your public profile.
             </span>
+
           </div>
 
           <div class="seo-point">
-            <strong>No manipulative engagement algorithm</strong>
+
+            <strong>
+              No rage-bait ranking system
+            </strong>
+
             <span>
-              The platform is built around human conversation
-              rather than an algorithm designed to maximize
-              outrage and compulsive engagement.
+              Conversation is not ordered around maximizing outrage
+              or compulsive engagement.
             </span>
+
           </div>
 
         </div>
@@ -1763,9 +1794,9 @@
         </h2>
 
         <p class="section-text">
-          Hash Humanity is being built around a different set of
-          assumptions: humans should be able to prove they are real
-          without being forced to publicly reveal who they are.
+          Proving that you are real should not mean surrendering
+          your identity, your attention or control of the
+          conversation.
         </p>
 
         <div class="principle-grid">
@@ -1777,12 +1808,12 @@
             </span>
 
             <h3>
-              Real humans
+              Real participation
             </h3>
 
             <p>
-              Human verification helps distinguish genuine human
-              participation from automated accounts.
+              Human verification puts a person behind the account
+              before the account gets a voice.
             </p>
 
           </article>
@@ -1798,8 +1829,9 @@
             </h3>
 
             <p>
-              HumanKey is designed to reduce duplicate identities
-              and large-scale account farming.
+              Duplicate detection is designed to stop the same
+              person from multiplying their influence through
+              additional identities.
             </p>
 
           </article>
@@ -1815,8 +1847,8 @@
             </h3>
 
             <p>
-              Proving you are human should not require turning your
-              real-world identity into your public profile.
+              Your public identity can remain separate from the
+              information used to establish that you are human.
             </p>
 
           </article>
@@ -1828,13 +1860,13 @@
             </span>
 
             <h3>
-              Human conversation
+              Your attention is yours
             </h3>
 
             <p>
-              Hash Humanity is built for discussion rather than
-              artificial engagement manufactured by bot networks
-              and ranking systems.
+              The platform is built for conversation, not for an
+              engagement machine choosing what will keep you angry
+              and scrolling.
             </p>
 
           </article>
@@ -1846,7 +1878,7 @@
     </section>
 
     <!-- =======================================================
-         STATEMENT
+         WHY HASH HUMANITY
     ======================================================== -->
 
     <section class="statement">
@@ -1858,24 +1890,22 @@
         </div>
 
         <h2 class="section-title">
-          A social network should connect people, not manipulate
-          them.
+          A social network should connect people, not manufacture
+          reality.
         </h2>
 
         <p class="section-text">
-          Modern social platforms can be flooded with bots, fake
-          profiles, duplicate accounts and coordinated account
-          networks. Those accounts can manufacture popularity,
-          amplify narratives and create the appearance of public
-          consensus that may not actually exist.
+          When one operator can control hundreds or thousands of
+          accounts, numbers stop meaning what people think they
+          mean. Likes, replies, trends and apparent consensus can
+          all be manufactured.
         </p>
 
         <p class="section-text">
-          Hash Humanity approaches that problem at the identity
-          layer. Instead of trying to guess whether an account is a
-          bot after it has already entered the network, HumanKey is
-          designed to establish unique human participation before
-          the account becomes part of the social system.
+          Hash Humanity changes the starting condition: establish a
+          unique human first. The goal is not to decide what people
+          should believe. It is to make it harder for fake crowds
+          to impersonate real ones.
         </p>
 
       </div>
@@ -1910,24 +1940,23 @@
           </div>
 
           <h2 class="section-title">
-            Zero-knowledge proof of personhood for one human,
-            one account.
+            Prove you're human without making your identity the
+            product.
           </h2>
 
           <p class="section-text">
-            HumanKey is Hash Humanity's proof-of-personhood
-            protocol for human verified social media. It combines
-            human verification, duplicate detection,
-            privacy-preserving cryptography, zero-knowledge proof
-            technology and passkey authentication to support one
-            human, one account.
+            HumanKey combines adult eligibility and liveness checks
+            with duplicate detection to establish that a unique
+            person is enrolling. After verification,
+            privacy-preserving zero-knowledge proof technology
+            allows that result to be represented without making
+            the biometric check itself your everyday login.
           </p>
 
           <p class="section-text">
-            The objective is not to publish who you are. The
-            objective is to establish that a unique human is behind
-            the account while keeping the public social identity
-            separate from the person's real-world identity.
+            Passkeys handle normal sign-in. Your face is not your
+            password, and your public Hash Humanity identity does
+            not have to be your real-world identity.
           </p>
 
           <a
@@ -1956,15 +1985,13 @@
         </div>
 
         <h2 class="section-title">
-          Social media can be human again.
+          Come talk to people.
         </h2>
 
         <p class="section-text">
-          Real people. Real conversations. Human verified social
-          media. One human, one account. Privacy-preserving
-          zero-knowledge proof of personhood. A social network
-          designed to make bots and manufactured engagement harder
-          to scale.
+          No fake crowd required. No algorithm telling you what
+          deserves your attention. Just a social network built to
+          put human participation back at the center.
         </p>
 
         <div class="final-actions">
@@ -2039,8 +2066,13 @@
 
   <script>
     (() => {
-      const langBtn = document.getElementById("langBtn");
-      const langMenu = document.getElementById("langMenu");
+
+      const langBtn =
+        document.getElementById("langBtn");
+
+      const langMenu =
+        document.getElementById("langMenu");
+
       const langBtnLabel =
         document.getElementById("langBtnLabel");
 
@@ -2059,60 +2091,82 @@
         ko: "KO"
       };
 
-      langBtn.addEventListener("click", () => {
-        const isOpen =
-          langMenu.classList.toggle("open");
+      const closeMenu = () => {
+
+        langMenu.classList.remove("open");
 
         langBtn.setAttribute(
           "aria-expanded",
-          String(isOpen)
+          "false"
         );
-      });
+
+      };
+
+      langBtn.addEventListener(
+        "click",
+        () => {
+
+          const isOpen =
+            langMenu.classList.toggle("open");
+
+          langBtn.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+          );
+
+        }
+      );
 
       langMenu
         .querySelectorAll("[data-lang]")
         .forEach((button) => {
 
-          button.addEventListener("click", () => {
+          button.addEventListener(
+            "click",
+            () => {
 
-            const lang =
-              button.getAttribute("data-lang");
+              const lang =
+                button.getAttribute("data-lang");
 
-            if (!lang) {
-              return;
+              if (!lang) {
+                return;
+              }
+
+              document.documentElement.lang =
+                lang;
+
+              langBtnLabel.textContent =
+                languageLabels[lang] ||
+                lang.toUpperCase();
+
+              localStorage.setItem(
+                "hhPromoLanguage",
+                lang
+              );
+
+              closeMenu();
+
             }
-
-            document.documentElement.lang = lang;
-
-            langBtnLabel.textContent =
-              languageLabels[lang] || lang.toUpperCase();
-
-            localStorage.setItem(
-              "hhPromoLanguage",
-              lang
-            );
-
-            langMenu.classList.remove("open");
-
-            langBtn.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-          });
+          );
 
         });
 
       const saved =
-        localStorage.getItem("hhPromoLanguage");
+        localStorage.getItem(
+          "hhPromoLanguage"
+        );
 
       if (
         saved &&
         languageLabels[saved]
       ) {
-        document.documentElement.lang = saved;
+
+        document.documentElement.lang =
+          saved;
 
         langBtnLabel.textContent =
           languageLabels[saved];
+
       }
 
       document.addEventListener(
@@ -2123,16 +2177,27 @@
             !langBtn.contains(event.target) &&
             !langMenu.contains(event.target)
           ) {
-            langMenu.classList.remove("open");
-
-            langBtn.setAttribute(
-              "aria-expanded",
-              "false"
-            );
+            closeMenu();
           }
 
         }
       );
+
+      document.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (event.key === "Escape") {
+
+            closeMenu();
+
+            langBtn.focus();
+
+          }
+
+        }
+      );
+
     })();
   </script>
 
